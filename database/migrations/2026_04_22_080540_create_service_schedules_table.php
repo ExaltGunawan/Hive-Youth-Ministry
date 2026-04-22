@@ -11,7 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('worship_title_id')->constrained('worship_titles')->onDelete('cascade');
             $table->date('tanggal');
-            $table->text('keterangan')->nullable();
+            $table->text('notes')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

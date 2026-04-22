@@ -12,7 +12,8 @@ return new class extends Migration {
             $table->integer('year');
             $table->text('description')->nullable();
             $table->enum('status', ['draft', 'pending', 'approved', 'rejected'])->default('draft');
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

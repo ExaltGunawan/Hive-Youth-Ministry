@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->text('notes')->nullable();
             $table->enum('status', ['requested', 'verified', 'completed'])->default('requested');
             $table->foreignId('id_bendahara')->nullable()->constrained('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

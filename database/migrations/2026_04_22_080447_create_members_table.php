@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('nama_lengkap');
+            $table->string('email')->nullable()->unique();
             $table->string('nama_panggilan')->nullable();
             $table->string('instagram')->nullable();
             $table->string('angkatan')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration {
             $table->string('golongan_darah')->nullable();
             $table->jsonb('hobi_interest')->nullable();
             $table->string('photo')->nullable();  // Path ke file photo
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -13,9 +13,10 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['super_admin', 'admin', 'treasurer', 'secretary', 'member']);
+            $table->string('role');
             $table->foreignId('divisi_id')->nullable()->constrained('divisi')->onDelete('set null');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

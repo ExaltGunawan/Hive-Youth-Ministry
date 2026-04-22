@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->bigInteger('amount');
             $table->string('category')->nullable();
             $table->text('notes')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

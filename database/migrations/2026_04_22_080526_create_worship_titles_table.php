@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('scripture')->nullable();
             $table->text('background_context')->nullable();
             $table->text('objective')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

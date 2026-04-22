@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('sub_tempat')->nullable();
             $table->time('jam');
             $table->date('tanggal');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

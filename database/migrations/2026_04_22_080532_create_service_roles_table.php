@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('service_roles', function (Blueprint $table) {
             $table->id();
             $table->string('role_name');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -12,7 +12,9 @@ return new class extends Migration {
             $table->foreignId('id_pembuat')->constrained('users');
             $table->string('title')->nullable();
             $table->LONGTEXT('value');
-            $table->jsonb('allowed_viewers');
+            $table->jsonb('allowed_viewers')->nullable();
+            $table->text('conclusion')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

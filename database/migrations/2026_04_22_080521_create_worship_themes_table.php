@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->date('month');
             $table->string('theme_title');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
