@@ -46,39 +46,31 @@
             padding: 2rem !important;
             background: transparent !important;
         }
-        .fi-simple-main {
+        .fi-simple-main,
+        .fi-pa-auth-card {
             background-color: #ffffff !important;
-            border-radius: 0.75rem !important;
-            padding: 3.5rem !important;
+            border-radius: 0.5rem !important;
+            padding: 1.5rem !important;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
             width: 100% !important;
-            max-width: 28rem !important;
+            max-width: 20rem !important;
             border: none !important;
             position: relative !important;
             z-index: 40 !important;
             margin: 0 !important;
         }
-        .gki-logo {
-            height: 3.5rem !important;
-            width: auto !important;
-            filter: brightness(0) invert(1) !important;
-            display: inline-block !important;
-        }
-        .hive-logo {
-            height: 8rem !important;
-            width: auto !important;
-            filter: brightness(0) invert(1) !important;
-            display: inline-block !important;
-        }
-        .fi-simple-main * {
-            color: #1a1a1a !important;
+        .fi-simple-main .fi-fo-field-wrp,
+        .fi-pa-auth-card .fi-fo-field-wrp {
+            margin-bottom: 0.125rem !important;
         }
         .fi-simple-main .fi-fo-field-wrp-label,
-        .fi-simple-main label {
+        .fi-simple-main label,
+        .fi-pa-auth-card .fi-fo-field-wrp-label,
+        .fi-pa-auth-card label {
             color: #1a1a1a !important;
-            font-weight: 500 !important;
+            font-weight: 600 !important;
             font-size: 0.875rem !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: 0.0625rem !important;
             display: block !important;
         }
         .fi-simple-main input[type="email"],
@@ -87,11 +79,20 @@
             background-color: #ffffff !important;
             color: #1a1a1a !important;
             border: 1px solid #d1d5db !important;
-            border-radius: 0.25rem !important;
-            padding: 0.625rem 0.75rem !important;
-            font-size: 1rem !important;
+            border-radius: 0.375rem !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 0.95rem !important;
             width: 100% !important;
+            box-sizing: border-box !important;
             box-shadow: none !important;
+            transition: border-color 0.2s ease !important;
+        }
+        .fi-simple-main input[type="email"]:focus,
+        .fi-simple-main input[type="password"]:focus,
+        .fi-simple-main input[type="text"]:focus {
+            border-color: #1a1a1a !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1) !important;
         }
         .fi-simple-main .fi-checkbox-input,
         .fi-simple-main input[type="checkbox"] {
@@ -115,25 +116,30 @@
         .fi-simple-main .fi-fo-field-wrp > div > div {
             display: flex !important;
             align-items: center !important;
-            margin-top: 0.5rem !important;
+            margin-top: 0.0625rem !important;
+            margin-bottom: 0.125rem !important;
         }
         .fi-simple-main span,
         .fi-simple-main label[for="remember"] {
             color: #4b5563 !important;
             font-weight: 500 !important;
-            font-size: 0.9rem !important;
+            font-size: 0.875rem !important;
             line-height: 1 !important;
             margin: 0 !important;
         }
-        .fi-simple-main button[type="submit"] {
+        .fi-simple-main button[type="submit"],
+        .fi-pa-auth-card button[type="submit"],
+        .fi-simple-main .fi-btn,
+        .fi-pa-auth-card .fi-btn,
+        button[type="submit"] {
             background-color: #1a1a1a !important;
             color: #ffffff !important;
             font-weight: 700 !important;
-            padding: 0.875rem !important;
+            padding: 0.5rem !important;
             border-radius: 0.375rem !important;
             width: 100% !important;
-            margin-top: 1.5rem !important;
-            font-size: 1.125rem !important;
+            margin-top: 0.0625rem !important;
+            font-size: 0.875rem !important;
             text-transform: none !important;
             letter-spacing: 0.025em !important;
             transition: all 0.2s ease-in-out !important;
@@ -141,18 +147,37 @@
             justify-content: center !important;
             align-items: center !important;
             border: none !important;
+            cursor: pointer !important;
+            box-sizing: border-box !important;
         }
-        .fi-simple-main button[type="submit"]:hover {
+        .fi-simple-main button[type="submit"]:hover,
+        .fi-pa-auth-card button[type="submit"]:hover,
+        .fi-simple-main .fi-btn:hover,
+        .fi-pa-auth-card .fi-btn:hover,
+        button[type="submit"]:hover {
             background-color: #000000 !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transform: translateY(-1px) !important;
+            color: #ffffff !important;
         }
-        .fi-simple-main span {
-            color: #4b5563 !important;
-            font-size: 0.875rem !important;
+        .fi-simple-main button[type="submit"] span,
+        .fi-pa-auth-card button[type="submit"] span,
+        .fi-simple-main .fi-btn span,
+        .fi-pa-auth-card .fi-btn span,
+        button[type="submit"] span {
+            color: #ffffff !important;
         }
-        .fi-simple-layout > * {
-            position: relative !important;
-            z-index: 10 !important;
+        .gki-logo {
+            height: 3.5rem !important;
+            width: auto !important;
+            filter: brightness(0) invert(1) !important;
+            display: inline-block !important;
+        }
+        .hive-logo {
+            height: 8rem !important;
+            width: auto !important;
+            filter: brightness(0) invert(1) !important;
+            display: inline-block !important;
         }
     </style>
     @endpush
@@ -177,9 +202,9 @@
                     <img src="/assets/Logo.png" alt="Logo" class="hive-logo">
                 </div>
 
-                <div style="margin-bottom: 1.5rem; text-align: center; z-index: 60; position: relative;">
-                    <h1 style="font-size: 5rem; font-weight: 700; color: white; letter-spacing: -0.025em; margin-bottom: 0.25rem; font-family: sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">Login</h1>
-                    <p style="font-size: 1.75rem; color: rgba(255,255,255,0.9); font-weight: 500; font-family: sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Your Account</p>
+                <div style="margin-bottom: 0.75rem; text-align: center; z-index: 60; position: relative;">
+                    <h1 style="font-size: 2.5rem; font-weight: 700; color: white; letter-spacing: -0.025em; margin-bottom: 0.125rem; font-family: sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">Login</h1>
+                    <p style="font-size: 1rem; color: rgba(255,255,255,0.9); font-weight: 500; font-family: sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Your Account</p>
                 </div>
             @endif
 
@@ -213,6 +238,7 @@
                         default => $maxWidth,
                     },
                 ])
+                style="background-color: #ffffff !important; border-radius: 0.5rem !important; padding: 1.5rem !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important; width: 100% !important; max-width: 20rem !important; border: none !important; position: relative !important; z-index: 40 !important; margin: 0 !important;"
             >
                 {{ $slot }}
             </main>
