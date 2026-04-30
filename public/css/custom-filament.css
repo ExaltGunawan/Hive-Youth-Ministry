@@ -300,6 +300,25 @@ html, body {
     color: #ffffff !important; /* Putih hanya saat aktif (button hitam) */
 }
 
+/* Styling Badge Sidebar (Angka di Roles, dsb) agar tetap terlihat jelas */
+.fi-sidebar-nav .fi-badge {
+    background-color: #ffffff !important; /* Kotak putih solid */
+    color: #FFB300 !important; /* Angka warna kuning/orange */
+    font-weight: 900 !important;
+    border-radius: 8px !important;
+    padding: 0.1rem 0.6rem !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Memastikan di mode gelap badge ini tidak berubah gelap atau transparan */
+.dark .fi-sidebar-nav .fi-badge {
+    background-color: #000000 !important;
+    color: #FFB300 !important;
+    opacity: 1 !important;
+}
+
 /* 7. Profile Footer (Optional, jika ada) */
 .fi-sidebar-footer {
     padding: 1.5rem 1rem !important;
