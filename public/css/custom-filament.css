@@ -138,15 +138,7 @@ html, body {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    width: 280px !important;
-    min-width: 280px !important;
     padding: 1.25rem !important;
-    height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-    z-index: 50 !important;
-    position: relative !important;
-    overflow: visible !important;
     padding-top: 10rem !important; /* Memberi ruang untuk logo di atas */
 }
 
@@ -186,16 +178,11 @@ html, body {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    visibility: visible !important;
 }
 
 .fi-sidebar aside {
-    height: 100% !important;
-    width: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    position: relative !important;
-    transform: none !important;
 }
 
 /* 3. Header Sidebar (Logo Area) - Posisi di Luar/Atas Sidebar */
@@ -336,34 +323,40 @@ html, body {
     -webkit-backdrop-filter: none !important;
     border: none !important;
     box-shadow: none !important;
-    position: absolute !important;
-    top: 2rem !important;
-    right: 4rem !important;
-    width: auto !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 4rem !important;
+    display: flex !important;
+    align-items: center !important;
     z-index: 100 !important;
 }
 
 .fi-topbar-header-container {
-    padding: 0 !important;
+    width: 100% !important;
+    padding: 0 1rem !important; /* Jarak aman dari pinggir */
     margin: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important; /* Burger kiri, Profile kanan */
+    align-items: center !important;
+}
+
+.fi-topbar nav {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    background: transparent !important;
+}
+
+/* Munculkan kembali tombol burger/navigasi di kiri */
+.fi-topbar nav > div:first-child,
+.fi-topbar-header-container > div:first-child {
+    display: flex !important;
+    margin-right: auto !important; /* Dorong sisanya ke kanan */
 }
 
 .fi-user-menu {
-    padding: 0.5rem !important; /* Memberi sedikit jarak dari tepi layar agar tidak terpotong */
-}
-
-.fi-topbar nav,
-.fi-topbar-header-container {
-    background: transparent !important;
-    display: flex !important;
-    justify-content: flex-end !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.fi-topbar nav > div:first-child,
-.fi-topbar-header-container > div:first-child {
-    display: none !important;
+    margin-left: auto !important; /* Pastikan profil mentok kanan */
 }
 
 /* Biarkan user menu tetap bisa diklik dan rapih */
@@ -375,7 +368,8 @@ html, body {
     border: none !important;
 }
 
-.fi-user-menu button {
+.fi-user-menu > button,
+.fi-user-menu-btn {
     background: rgba(255, 255, 255, 0.1) !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
@@ -385,58 +379,62 @@ html, body {
     transition: all 0.3s ease !important;
 }
 
-/* Fix untuk Pop-up Profile/User Menu agar normal kembali */
+/* Fix untuk Pop-up Profile/User Menu agar normal kembali dari z-index/clipping */
 .fi-dropdown-panel {
-    position: fixed !important; /* Gunakan fixed agar tidak terpengaruh kontainer yang overflow:hidden */
-    top: 4rem !important; /* Di bawah tombol profil */
-    right: 1.5rem !important; /* Sejajar dengan tombol profil */
-    background-color: #18181b !important;
-    background: #18181b !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: fixed !important; 
+    top: 4rem !important; 
+    right: 1.5rem !important; 
     border-radius: 12px !important;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
     min-width: 240px !important;
     width: max-content !important;
-    z-index: 99999 !important; /* Sangat tinggi agar di atas segalanya */
+    z-index: 99999 !important; 
     overflow: hidden !important;
     transform: none !important;
 }
 
-
-
 /* Reset semua elemen di dalam dropdown agar mengikuti style asli filament yang rapi */
 .fi-dropdown-list {
     padding: 0.5rem !important;
-    background: transparent !important;
-}
-
-.fi-dropdown-list-item {
-    background: transparent !important;
 }
 
 .fi-dropdown-list-item-button {
-    color: white !important;
     padding: 0.5rem 1rem !important;
-}
-
-.fi-dropdown-list-item-button:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Memastikan label (teks) terlihat */
 .fi-dropdown-list-item-label,
 .fi-dropdown-list-item-label span,
 .fi-dropdown-list-item-label div {
-    color: white !important;
     display: inline-block !important;
     visibility: visible !important;
     opacity: 1 !important;
     text-align: left !important;
 }
 
+/* Highlight Active Theme Toggle - Tanpa Outline */
+.fi-dropdown-panel button[aria-selected="true"],
+.fi-dropdown-panel button[aria-current="true"],
+.fi-dropdown-panel button.fi-active,
+.fi-theme-switcher-button[aria-selected="true"],
+.fi-theme-switcher-button[aria-current="true"],
+.fi-theme-switcher-button.fi-active {
+    background-color: rgba(255, 179, 0, 0.1) !important; /* Kuning sangat muda */
+    border: none !important;
+    border-radius: 8px !important;
+    color: #FFB300 !important;
+    box-shadow: 0 2px 8px rgba(255, 179, 0, 0.1) !important;
+}
+
+/* Pastikan Icon tetap Kuning */
+.fi-dropdown-panel button[aria-selected="true"] svg,
+.fi-dropdown-panel button[aria-current="true"] svg,
+.fi-dropdown-panel button.fi-active svg {
+    color: #FFB300 !important;
+}
+
 /* Memastikan icon terlihat */
 .fi-dropdown-list-item-icon {
-    color: #FFB300 !important;
     width: 1.25rem !important;
     height: 1.25rem !important;
     flex-shrink: 0 !important;
@@ -444,14 +442,16 @@ html, body {
 }
 
 /* Sembunyikan semua elemen navbar lainnya */
+.fi-topbar,
 .fi-topbar nav,
 .fi-topbar-header-container,
 .fi-topbar-header-container > div:first-child,
 .fi-topbar nav > div:first-child {
     background: transparent !important;
     display: flex !important;
-    justify-content: flex-end !important;
     border: none !important;
+    box-shadow: none !important; /* Hapus bayangan agar tidak ada garis pembatas */
+    outline: none !important;
 }
 
 /* Pastikan area profile tetap elegan di atas kaca */
@@ -462,19 +462,16 @@ html, body {
 }
 
 /* --- RESPONSIVE MOBILE STYLING --- */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .fi-topbar {
-        position: absolute !important;
-        top: 0 !important;
-        right: 0 !important;
-        left: 0 !important;
+        position: relative !important;
         width: 100% !important;
-        height: auto !important;
+        height: 4rem !important;
+        display: flex !important;
+        align-items: center !important;
+        z-index: 100 !important;
+        padding: 0 1rem !important;
         background: transparent !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        z-index: 1000 !important;
-        padding: 1rem !important;
     }
 
     .fi-topbar-header-container {
@@ -494,7 +491,8 @@ html, body {
         padding: 0.25rem !important;
     }
 
-    .fi-user-menu button {
+    .fi-user-menu > button,
+    .fi-user-menu-btn {
         background: rgba(255, 255, 255, 0.1) !important;
         backdrop-filter: blur(8px) !important;
         border-radius: 9999px !important;
@@ -502,32 +500,24 @@ html, body {
 
     .custom-header-bg {
         height: auto !important;
-        min-height: 350px !important;
-        padding: 5rem 1rem 2rem 1rem !important;
-        margin: 0 !important; /* Reset margin on mobile to avoid negative push */
-        width: 100% !important; /* Force full width within container */
-        border-radius: 0 0 32px 32px !important;
+        min-height: 200px !important;
+        padding: 3rem 1.5rem !important;
+        margin: 0 0 2rem 0 !important;
+        width: 100% !important;
+        border-radius: 24px !important; /* Biar tetap bentuk kartu di mobile */
         text-align: center !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
-        gap: 1rem !important;
-        left: 0 !important;
-        right: 0 !important;
+        gap: 1.5rem !important;
     }
 
     .fi-main {
-        padding: 0 !important;
-        overflow-x: hidden !important;
-    }
-
-    .fi-main-ctn {
-        padding: 0 !important;
-        margin: 0 !important;
+        padding: 1rem !important;
     }
 
     .fi-content {
-        padding: 1rem !important;
+        padding: 0 !important;
     }
 
 
@@ -567,24 +557,30 @@ html, body {
 
     /* 1. Sidebar Mobile Adjustments */
     .fi-sidebar {
-        width: 100% !important;
-        max-width: 300px !important;
-        padding: 0 !important;
-        background: #FFB300 !important; /* Direct background for mobile sidebar */
+        padding-top: 0 !important; /* Hilangkan ruang kosong di atas */
+        background: #FFB300 !important; 
         border-radius: 0 32px 32px 0 !important;
-        overflow: hidden !important;
     }
 
     .fi-sidebar::before {
-        display: none !important; /* Disable the pseudo-element background on mobile */
+        display: none !important; 
     }
 
     .fi-sidebar-header {
         position: relative !important;
         width: 100% !important;
         height: auto !important;
-        padding: 2rem 1rem 1rem 1rem !important;
+        padding: 3rem 1rem 1rem 1rem !important; /* Padding seimbang */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
         background: transparent !important;
+    }
+
+    .fi-sidebar-header a {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
     }
 
     .fi-logo, .fi-sidebar-header img {
@@ -617,13 +613,14 @@ html, body {
     background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('/assets/BG.png');
     background-size: cover;
     background-position: center;
-    height: 400px;
-    width: calc(100% + 4rem);
-    margin: -2.5rem -2rem 2rem -2rem; 
+    height: 300px;
+    width: 100%;
+    margin-bottom: 2rem; 
+    border-radius: 24px; /* Samakan dengan widget bawah */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 5rem;
+    padding: 0 4rem;
     color: white !important;
     box-shadow: inset 0 -100px 100px -50px rgba(17, 24, 39, 1);
     position: relative; /* Add this to allow children with position:absolute to align relative to this header */

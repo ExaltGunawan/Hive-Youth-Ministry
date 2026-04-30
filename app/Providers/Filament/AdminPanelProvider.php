@@ -58,14 +58,14 @@ class AdminPanelProvider extends PanelProvider
                             }
                         @endphp
                         <div class="custom-header-bg mb-8">
-                            <div class="flex justify-between items-center w-full">
-                                <div>
-                                    <h2 class="text-3xl font-medium opacity-90 tracking-tight">{{ $greeting }}</h2>
-                                    <h1 class="text-7xl font-black uppercase tracking-normal leading-tight mt-4">{{ auth()->user()->name }}</h1>
+                            <div class="flex flex-col md:flex-row justify-between items-center md:items-center w-full gap-8 md:gap-0">
+                                <div class="text-center md:text-left">
+                                    <h2 class="text-xl md:text-3xl font-medium opacity-90 tracking-tight">{{ $greeting }}</h2>
+                                    <h1 class="text-4xl md:text-7xl font-black uppercase tracking-normal leading-tight mt-2 md:mt-4">{{ auth()->user()->name }}</h1>
                                 </div>
-                                <div class="text-right">
-                                    <p class="text-2xl font-bold opacity-80">{{ now()->timezone("Asia/Jakarta")->format("l, d F Y") }}</p>
-                                    <p class="text-7xl font-black tracking-normal mt-2">{{ now()->timezone("Asia/Jakarta")->format("H:i") }}</p>
+                                <div class="text-center md:text-right">
+                                    <p class="text-lg md:text-2xl font-bold opacity-80">{{ now()->timezone("Asia/Jakarta")->format("l, d F Y") }}</p>
+                                    <p class="text-5xl md:text-7xl font-black tracking-normal mt-1 md:mt-2">{{ now()->timezone("Asia/Jakarta")->format("H:i") }}</p>
                                 </div>
                             </div>
                         </div>
