@@ -140,6 +140,16 @@ html, body {
     box-shadow: none !important;
     padding: 1.25rem !important;
     padding-top: 10rem !important; /* Memberi ruang untuk logo di atas */
+    position: relative !important;
+    z-index: 50 !important;
+}
+
+@media (min-width: 1024px) {
+    .fi-sidebar {
+        position: sticky !important;
+        top: 0 !important;
+        height: 100vh !important;
+    }
 }
 
 /* Hilangkan box bayangan/border di belakang logo */
@@ -230,9 +240,13 @@ html, body {
 /* 4. Navigasi Sidebar (Scrollable) */
 .fi-sidebar-nav {
     flex: 1 1 auto !important;
-    padding: 1.5rem 0.75rem !important;
+    padding: 1.5rem 0.75rem 5rem 0.75rem !important; /* Tambah padding bawah agar tidak bocor */
     background-color: transparent !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: calc(100vh - 11.25rem) !important; /* Tinggi logo (10rem) + margin bawah (1.25rem) */
+    margin-bottom: 1.25rem !important;
+    border-radius: 0 0 40px 40px !important; /* Menyesuaikan lengkungan kotak kuning */
     scrollbar-width: none !important; /* Untuk Firefox */
     -ms-overflow-style: none !important;  /* Untuk IE dan Edge */
 }
@@ -371,11 +385,11 @@ html, body {
 .fi-topbar nav > div:first-child,
 .fi-topbar-header-container > div:first-child {
     display: flex !important;
-    margin-right: auto !important; /* Dorong sisanya ke kanan */
 }
 
 .fi-user-menu {
-    margin-left: auto !important; /* Pastikan profil mentok kanan */
+    display: flex !important;
+    align-items: center !important;
 }
 
 /* Biarkan user menu tetap bisa diklik dan rapih */
@@ -576,9 +590,16 @@ html, body {
 
     /* 1. Sidebar Mobile Adjustments */
     .fi-sidebar {
-        padding-top: 0 !important; /* Hilangkan ruang kosong di atas */
+        position: fixed !important; /* Pastikan dia fixed saat muncul di mobile */
+        top: 0 !important;
+        left: 0 !important;
+        width: 85% !important; /* Lebar default mobile */
+        max-width: 320px !important; /* Batas maksimal lebar agar tidak terlalu lebar di tablet/ipad */
+        height: 100vh !important;
+        z-index: 1000 !important;
         background: #FFB300 !important; 
         border-radius: 0 32px 32px 0 !important;
+        padding-top: 0 !important;
     }
 
     .fi-sidebar::before {
@@ -589,11 +610,43 @@ html, body {
         position: relative !important;
         width: 100% !important;
         height: auto !important;
-        padding: 3rem 1rem 1rem 1rem !important; /* Padding seimbang */
+        padding: 2rem 1rem !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        background: transparent !important;
+    }
+
+    .fi-logo, .fi-sidebar-header img {
+        max-height: 5rem !important;
+    }
+
+    .fi-topbar {
+        position: relative !important;
+        width: 100vw !important; /* Paksa lebar penuh viewport */
+        height: 5rem !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 1rem !important;
+        background: transparent !important; /* Kembali ke transparan agar tidak nabrak background utama */
+        z-index: 100 !important;
+    }
+
+    .fi-topbar-header-container {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* Paksa burger ke kiri dan profile ke kanan di mobile */
+    .fi-topbar nav > div:first-child,
+    .fi-topbar-header-container > div:first-child {
+        margin-right: auto !important;
+    }
+
+    .fi-user-menu {
+        margin-left: auto !important;
     }
 
     .fi-sidebar-header a {
