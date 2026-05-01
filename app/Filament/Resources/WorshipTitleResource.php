@@ -43,15 +43,20 @@ class WorshipTitleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('theme.theme_title')
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('scripture')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('background_context')
+                    ->limit(50)
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('objective')
+                    ->limit(50)
+                    ->wrap(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('worship_theme_id')
