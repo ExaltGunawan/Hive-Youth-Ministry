@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateServiceRole extends CreateRecord
 {
     protected static string $resource = ServiceRoleResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

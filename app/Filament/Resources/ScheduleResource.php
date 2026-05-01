@@ -86,7 +86,8 @@ class ScheduleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSchedules::route('/'),
+            'index' => Pages\ScheduleCalendar::route('/'),
+            'list' => Pages\ListSchedules::route('/list'),
             'create' => Pages\CreateSchedule::route('/create'),
             'view' => Pages\ViewSchedule::route('/{record}'),
             'edit' => Pages\EditSchedule::route('/{record}/edit'),
