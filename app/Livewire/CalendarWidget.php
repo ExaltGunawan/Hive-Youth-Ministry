@@ -103,11 +103,9 @@ class CalendarWidget extends Component
             ];
         }
 
-        $schedules = Schedule::whereYear('tanggal', $this->currentYear)
+        $allMonthSchedules = Schedule::with('divisi')
+            ->whereYear('tanggal', $this->currentYear)
             ->whereMonth('tanggal', $this->currentMonth)
-            ->when(!empty($this->selectedDivisions), function ($query) {
-                return $query->whereIn('divisi_id', $this->selectedDivisions);
-            })
             ->get()
             ->groupBy(fn($item) => $item->tanggal->toDateString());
 
@@ -116,7 +114,7 @@ class CalendarWidget extends Component
         return view('livewire.calendar-widget', [
             'calendar' => $calendar,
             'monthName' => $date->format('F Y'),
-            'scheduleDates' => $schedules,
+            'scheduleDates' => $allMonthSchedules,
             'divisions' => $divisi,
         ]);
     }

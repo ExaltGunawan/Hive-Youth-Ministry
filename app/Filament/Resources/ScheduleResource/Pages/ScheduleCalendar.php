@@ -11,7 +11,7 @@ class ScheduleCalendar extends Page
 
     protected static string $view = 'filament.resources.schedule-resource.pages.schedule-calendar';
 
-    protected static ?string $title = 'Schedule';
+    protected static ?string $title = 'Kegiatan Youth';
 
     public function getHeaderActions(): array
     {

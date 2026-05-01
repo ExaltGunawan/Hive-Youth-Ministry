@@ -36,7 +36,9 @@ class ScheduleResource extends Resource
                 Forms\Components\TextInput::make('sub_tempat')
                     ->maxLength(255),
                 Forms\Components\TimePicker::make('jam')
-                    ->required(),
+                    ->required()
+                    ->seconds(false)
+                    ->displayFormat('H:i'),
                 Forms\Components\DatePicker::make('tanggal')
                     ->required(),
             ]);

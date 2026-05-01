@@ -25,6 +25,8 @@ class DivisiResource extends Resource
                 Forms\Components\TextInput::make('nama_divisi')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\ColorPicker::make('color')
+                    ->required(),
             ]);
     }
 
@@ -34,6 +36,7 @@ class DivisiResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama_divisi')
                     ->searchable(),
+                Tables\Columns\ColorColumn::make('color'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
