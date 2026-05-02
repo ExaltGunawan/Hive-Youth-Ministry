@@ -92,6 +92,12 @@ class MemberResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_panggilan')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('instagram')
+                    ->label('Instagram')
+                    ->icon('heroicon-m-camera')
+                    ->url(fn ($record) => $record->instagram ? "https://instagram.com/" . str_replace('@', '', $record->instagram) : null)
+                    ->openUrlInNewTab()
+                    ->placeholder('-'),
                 Tables\Columns\TextColumn::make('status_anggota')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

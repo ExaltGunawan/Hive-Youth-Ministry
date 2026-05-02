@@ -61,23 +61,302 @@ html, body {
     background: transparent !important;
 }
 
-/* Glassmorphism for Cards & Sections */
-.fi-card, 
-.fi-section,
-.fi-ta-ctn {
-    background: var(--card-bg) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 24px !important;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.4s ease;
+/* Header Shortcut Cards Styling */
+.header-shortcut-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    color: white;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none !important;
 }
 
-.fi-card:hover {
-    border-color: rgba(255, 179, 0, 0.3) !important;
-    transform: translateY(-4px);
+.header-shortcut-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
+
+.shortcut-icon-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 14px;
+    transition: transform 0.3s ease;
+}
+
+.header-shortcut-card:hover .shortcut-icon-bg {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.shortcut-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.shortcut-desc {
+    font-size: 0.65rem;
+    font-weight: 500;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Staggered entry for shortcuts */
+.header-shortcut-card:nth-child(1) { animation: fadeInScale 0.4s ease-out 0.2s both; }
+.header-shortcut-card:nth-child(2) { animation: fadeInScale 0.4s ease-out 0.3s both; }
+.header-shortcut-card:nth-child(3) { animation: fadeInScale 0.4s ease-out 0.4s both; }
+.header-shortcut-card:nth-child(4) { animation: fadeInScale 0.4s ease-out 0.5s both; }
+.header-shortcut-card:nth-child(5) { animation: fadeInScale 0.4s ease-out 0.6s both; }
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* --- REFINED MODERN DASHBOARD UI --- */
+
+/* Standardized Glassmorphism for actual cards only */
+.fi-wi-stats-overview-stat,
+.fi-section,
+.fi-card,
+.fi-ta-ctn {
+    background: rgba(255, 255, 255, 0.02) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 32px !important;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    overflow: hidden !important;
+}
+
+/* Light Mode Card Styling - FIX GHOST BOXES */
+:root:not(.dark) .fi-wi-stats-overview-stat,
+:root:not(.dark) .fi-section,
+:root:not(.dark) .fi-card,
+:root:not(.dark) .fi-ta-ctn {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* CRITICAL: Force all Filament wrapper containers to be transparent */
+.fi-wi-widget,
+.fi-wi-stats-overview,
+.fi-wi-stats-overview > div,
+.fi-section-content-ctn,
+.fi-ta-ctn-content,
+.fi-wi-stats-overview > dl {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+}
+
+/* Hover Interactivity */
+.fi-wi-stats-overview-stat:hover,
+.fi-section:hover,
+.fi-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
+}
+
+:root:not(.dark) .fi-wi-stats-overview-stat:hover,
+:root:not(.dark) .fi-section:hover,
+:root:not(.dark) .fi-card:hover {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Global Widget Grid Spacing */
+.fi-wi-widgets {
+    gap: 1.5rem !important;
+}
+
+
+/* Stats Overview Refinement - Compact Size */
+.fi-wi-stats-overview-stat {
+    padding: 1.5rem 1.75rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+.fi-wi-stats-overview-stat .fi-wi-stats-overview-stat-label {
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.15em !important;
+    color: #FFB300 !important;
+    margin-bottom: 0.5rem !important;
+    opacity: 0.8 !important;
+}
+
+.fi-wi-stats-overview-stat .fi-wi-stats-overview-stat-value {
+    font-size: 2.5rem !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.04em !important;
+    line-height: 1 !important;
+    color: white !important;
+}
+
+:root:not(.dark) .fi-wi-stats-overview-stat .fi-wi-stats-overview-stat-value {
+    color: #111827 !important;
+}
+
+.fi-wi-stats-overview-stat .fi-wi-stats-overview-stat-description {
+    margin-top: 0.75rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    opacity: 0.4 !important;
+}
+
+:root:not(.dark) .fi-wi-stats-overview-stat .fi-wi-stats-overview-stat-description {
+    opacity: 0.6 !important;
+    color: #4B5563 !important;
+}
+
+/* Table Widgets Aesthetic (Notes, Schedules, Birthdays) */
+.fi-ta-header {
+    padding: 2rem 2rem 1rem 2rem !important;
+    background: transparent !important;
+}
+
+.fi-ta-header-heading {
+    font-size: 1.5rem !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.03em !important;
+    color: white !important;
+}
+
+:root:not(.dark) .fi-ta-header-heading {
+    color: #111827 !important;
+}
+
+.fi-ta-content {
+    background: transparent !important;
+    padding: 0 1rem 1rem 1rem !important;
+}
+
+.fi-ta-table {
+    border-spacing: 0 0.5rem !important;
+    border-collapse: separate !important;
+}
+
+.fi-ta-row {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 16px !important;
+    transition: all 0.3s ease !important;
+}
+
+:root:not(.dark) .fi-ta-row {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
+.fi-ta-row:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+    transform: scale(1.01);
+}
+
+:root:not(.dark) .fi-ta-row:hover {
+    background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.fi-ta-cell {
+    border: none !important;
+    padding: 1.25rem 1rem !important;
+}
+
+
+/* Table Empty State */
+.fi-ta-empty-state {
+    padding: 4rem !important;
+    background: transparent !important;
+}
+
+/* Birthday List Specific */
+.fi-wi-monthly-birthdays .fi-ta-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Scrollbar Style */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 179, 0, 0.3);
+}
+
+
+
+/* Specific for stats overview container to remove its own box */
+.fi-wi-stats-overview > div {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+}
+
+/* Interaction & Hover Effects */
+.fi-wi-widget > div:hover,
+.fi-wi-stats-overview-stat:hover {
+    border-color: rgba(255, 179, 0, 0.2) !important;
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px 0 rgba(255, 179, 0, 0.05) !important;
+}
+
+/* Custom Grid for Dashboard Widgets */
+.fi-wi-widgets {
+    gap: 1.5rem !important;
+    align-items: stretch !important;
+}
+
+
+@keyframes fadeInWidget {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered animation for widgets */
+.fi-wi-widget:nth-child(1) { animation-delay: 0.1s; }
+.fi-wi-widget:nth-child(2) { animation-delay: 0.2s; }
+.fi-wi-widget:nth-child(3) { animation-delay: 0.3s; }
+.fi-wi-widget:nth-child(4) { animation-delay: 0.4s; }
+.fi-wi-widget:nth-child(5) { animation-delay: 0.5s; }
+.fi-wi-widget:nth-child(6) { animation-delay: 0.6s; }
+.fi-wi-widget:nth-child(7) { animation-delay: 0.7s; }
 
 /* Agar teks tetap terbaca dengan kontras yang baik */
 .fi-main-ctn,
@@ -139,9 +418,9 @@ html, body {
     border: none !important;
     box-shadow: none !important;
     padding: 1.25rem !important;
-    padding-top: 10rem !important; /* Memberi ruang untuk logo di atas */
     position: relative !important;
     z-index: 50 !important;
+    height: 100% !important;
 }
 
 @media (min-width: 1024px) {
@@ -152,20 +431,11 @@ html, body {
     }
 }
 
-/* Hilangkan box bayangan/border di belakang logo */
-.fi-sidebar header, 
-.fi-sidebar-header,
-.fi-sidebar aside > div:first-child {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Pseudo-element untuk Background Kuning (Hanya untuk Navigasi sekarang) */
+/* Pseudo-element untuk Background Kuning */
 .fi-sidebar::before {
     content: "" !important;
     position: absolute !important;
-    top: 10rem !important;
+    top: 10rem !important; /* Start lower to leave space for logo above it */
     left: 1.25rem !important;
     right: 0 !important;
     bottom: 1.25rem !important;
@@ -177,78 +447,58 @@ html, body {
     z-index: -1 !important;
 }
 
-
-/* Memastikan konten sidebar terlihat dan transparan background-nya */
-.fi-sidebar aside,
-.fi-sidebar aside > div,
-.fi-sidebar aside nav,
-.fi-sidebar aside header,
-.fi-sidebar aside .fi-sidebar-nav,
-.fi-sidebar aside .fi-sidebar-content {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
 .fi-sidebar aside {
     display: flex !important;
     flex-direction: column !important;
+    height: 100% !important;
+    position: relative !important;
 }
 
-/* 3. Header Sidebar (Logo Area) - Posisi di Luar/Atas Sidebar */
+/* 3. Header Sidebar (Logo Area) - Completely above the yellow box */
 .fi-sidebar-header {
     position: absolute !important;
     top: 1.25rem !important;
-    left: 1.25rem !important;
-    width: calc(280px - 2.5rem) !important;
+    left: 0 !important;
+    right: 0 !important;
     height: 8rem !important;
-    flex-shrink: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    z-index: 60 !important;
+    z-index: 100 !important;
+    background: transparent !important;
+    border: none !important; /* Ensure no border here */
+    outline: none !important;
+    box-shadow: none !important;
 }
 
-.fi-sidebar-header a {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
+/* Remove the specific border around the logo link/container */
+.fi-sidebar-header > a,
+.fi-sidebar-header > div,
+.fi-sidebar-header * {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
 }
 
-/* Logo styling - Ekstra Besar & Elegan */
+/* Logo styling */
 .fi-logo, .fi-sidebar-header img {
     display: block !important;
-    max-height: 14rem !important; /* Ukuran diperbesar secara masif ke 14rem */
+    max-height: 5.5rem !important;
     width: auto !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    filter: drop-shadow(0 8px 30px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 8px 25px rgba(0,0,0,0.4)); /* Stronger shadow since it's on dark bg */
     content: var(--logo-image) !important;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.3s ease;
 }
 
-.fi-logo:hover, .fi-sidebar-header img:hover {
-    transform: scale(1.05);
-}
-
-/* 4. Navigasi Sidebar (Scrollable) */
+/* 4. Navigasi Sidebar - Start inside the yellow box */
 .fi-sidebar-nav {
+    margin-top: 11rem !important; /* Start slightly below the yellow box top edge */
     flex: 1 1 auto !important;
-    padding: 1.5rem 0.75rem 5rem 0.75rem !important; /* Tambah padding bawah agar tidak bocor */
+    padding: 0 0.75rem 2rem 0.75rem !important;
     background-color: transparent !important;
     overflow-y: auto !important;
-    overflow-x: hidden !important;
-    max-height: calc(100vh - 11.25rem) !important; /* Tinggi logo (10rem) + margin bawah (1.25rem) */
-    margin-bottom: 1.25rem !important;
-    border-radius: 0 0 40px 40px !important; /* Menyesuaikan lengkungan kotak kuning */
-    scrollbar-width: none !important; /* Untuk Firefox */
-    -ms-overflow-style: none !important;  /* Untuk IE dan Edge */
+    scrollbar-width: none !important;
 }
 
 /* Sembunyikan scrollbar untuk Chrome, Safari dan Opera */
@@ -356,7 +606,8 @@ html, body {
     -webkit-backdrop-filter: none !important;
     border: none !important;
     box-shadow: none !important;
-    position: relative !important;
+    position: sticky !important; /* Change from relative to sticky */
+    top: 0 !important; /* Ensure it sticks to the top */
     width: 100% !important;
     height: 4rem !important;
     display: flex !important;

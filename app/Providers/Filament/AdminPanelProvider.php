@@ -57,15 +57,67 @@ class AdminPanelProvider extends PanelProvider
                                 $greeting = "Good Evening,";
                             }
                         @endphp
-                        <div class="custom-header-bg mb-8">
-                            <div class="flex flex-col md:flex-row justify-between items-center md:items-center w-full gap-8 md:gap-0">
-                                <div class="text-center md:text-left">
-                                    <h2 class="text-xl md:text-3xl font-medium opacity-90 tracking-tight">{{ $greeting }}</h2>
-                                    <h1 class="text-4xl md:text-7xl font-black uppercase tracking-normal leading-tight mt-2 md:mt-4">{{ auth()->user()->name }}</h1>
+                        <div class="custom-header-bg mb-8 p-8 md:p-12 rounded-[40px] relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            <div class="relative z-10 flex flex-col gap-8">
+                                <div class="flex flex-col md:flex-row justify-between items-center md:items-end w-full gap-8 md:gap-0">
+                                    <div class="text-center md:text-left">
+                                        <h2 class="text-xl md:text-2xl font-medium opacity-70 tracking-tight">{{ $greeting }}</h2>
+                                        <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mt-2">{{ auth()->user()->name }}</h1>
+                                    </div>
+                                    <div class="text-center md:text-right hidden md:block">
+                                        <p class="text-lg font-bold opacity-60 tracking-widest uppercase">{{ now()->timezone("Asia/Jakarta")->format("l, d F Y") }}</p>
+                                        <p class="text-5xl font-black tracking-tighter mt-1">{{ now()->timezone("Asia/Jakarta")->format("H:i") }}</p>
+                                    </div>
                                 </div>
-                                <div class="text-center md:text-right">
-                                    <p class="text-lg md:text-2xl font-bold opacity-80">{{ now()->timezone("Asia/Jakarta")->format("l, d F Y") }}</p>
-                                    <p class="text-5xl md:text-7xl font-black tracking-normal mt-1 md:mt-2">{{ now()->timezone("Asia/Jakarta")->format("H:i") }}</p>
+
+                                {{-- Integrated Quick Actions --}}
+                                <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-4">
+                                    <a href="/admin/schedules/create" class="header-shortcut-card">
+                                        <div class="shortcut-icon-bg bg-emerald-500/20 text-emerald-400">
+                                            <x-heroicon-m-calendar-days class="w-5 h-5"/>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="shortcut-label">Schedule</span>
+                                            <span class="shortcut-desc">Add New</span>
+                                        </div>
+                                    </a>
+                                    <a href="/admin/notes/create" class="header-shortcut-card">
+                                        <div class="shortcut-icon-bg bg-blue-500/20 text-blue-400">
+                                            <x-heroicon-m-document-text class="w-5 h-5"/>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="shortcut-label">Notulensi</span>
+                                            <span class="shortcut-desc">Create Note</span>
+                                        </div>
+                                    </a>
+                                    <a href="/admin/worship-titles/create" class="header-shortcut-card">
+                                        <div class="shortcut-icon-bg bg-amber-500/20 text-amber-400">
+                                            <x-heroicon-m-book-open class="w-5 h-5"/>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="shortcut-label">Judul</span>
+                                            <span class="shortcut-desc">Set Title</span>
+                                        </div>
+                                    </a>
+                                    <a href="/admin/worship-themes/create" class="header-shortcut-card">
+                                        <div class="shortcut-icon-bg bg-rose-500/20 text-rose-400">
+                                            <x-heroicon-m-swatch class="w-5 h-5"/>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="shortcut-label">Tema</span>
+                                            <span class="shortcut-desc">Monthly</span>
+                                        </div>
+                                    </a>
+                                    <a href="/admin/service-schedules/create" class="header-shortcut-card">
+                                        <div class="shortcut-icon-bg bg-purple-500/20 text-purple-400">
+                                            <x-heroicon-m-user-group class="w-5 h-5"/>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="shortcut-label">Petugas</span>
+                                            <span class="shortcut-desc">Assignment</span>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -79,8 +131,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
