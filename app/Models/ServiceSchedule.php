@@ -13,6 +13,7 @@ class ServiceSchedule extends Model
 
     protected $fillable = [
         'worship_title_id',
+        'pic_id',
         'tanggal',
         'keterangan',
     ];
@@ -24,6 +25,11 @@ class ServiceSchedule extends Model
     public function worshipTitle()
     {
         return $this->belongsTo(WorshipTitle::class);
+    }
+
+    public function pic()
+    {
+        return $this->belongsTo(Member::class, 'pic_id');
     }
 
     public function assignments()
