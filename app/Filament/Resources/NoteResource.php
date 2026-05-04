@@ -38,6 +38,18 @@ class NoteResource extends Resource
                     ->label('Kesimpulan / Action Plan')
                     ->placeholder('Tulis kesimpulan di sini...')
                     ->columnSpanFull(),
+                Forms\Components\Section::make('Daftar Hadir Pengurus')
+                    ->description('Centang untuk hadir, hilangkan centang untuk tidak hadir.')
+                    ->schema([
+                        Forms\Components\CheckboxList::make('attendance')
+                            ->label('')
+                            ->options(\App\Models\User::all()->pluck('name', 'id'))
+                            ->default(\App\Models\User::all()->pluck('id')->toArray())
+                            ->columns(3)
+                            ->columnSpanFull()
+                            ->bulkToggleable(),
+                    ])
+                    ->collapsible(),
                 Forms\Components\Select::make('allowed_viewers')
                     ->multiple()
                     ->options(\App\Models\Divisi::all()->pluck('nama_divisi', 'nama_divisi')),
@@ -57,6 +69,21 @@ class NoteResource extends Resource
                     ->label('Isi Notulensi')
                     ->html()
                     ->limit(50),
+                Tables\Columns\TextColumn::make('attendance_count')
+                    ->label('Kehadiran')
+                    ->badge()
+                    ->color('success')
+                    ->getStateUsing(function ($record) {
+                        $totalUsers = \App\Models\User::count();
+                        $attendance = $record->attendance;
+                        
+                        if (is_string($attendance)) {
+                            $attendance = json_decode($attendance, true);
+                        }
+                        
+                        $count = is_array($attendance) ? count($attendance) : 0;
+                        return "{$count} / {$totalUsers}";
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat pada')
                     ->dateTime()

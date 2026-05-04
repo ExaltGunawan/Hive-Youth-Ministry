@@ -17,9 +17,11 @@ class Note extends Model
         'value',
         'allowed_viewers',
         'conclusion',
+        'attendance',
     ];
 
     protected $casts = [
         'allowed_viewers' => 'array',
+        'attendance' => 'json',
     ];
 }
