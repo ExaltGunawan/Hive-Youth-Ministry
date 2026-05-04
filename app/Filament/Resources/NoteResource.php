@@ -97,6 +97,12 @@ class NoteResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('download')
+                    ->label('Download PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('warning')
+                    ->url(fn (Note $record): string => route('admin.notes.download', $record))
+                    ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make()
                     ->hidden(fn ($record) => $record->trashed()),
                 Tables\Actions\DeleteAction::make(),

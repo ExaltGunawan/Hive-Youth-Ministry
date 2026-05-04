@@ -15,9 +15,21 @@ class RkaDetail extends Model
         'rka_id',
         'item_name',
         'amount',
+        'balance',
         'category',
         'notes',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (is_null($model->balance)) {
+                $model->balance = $model->amount;
+            }
+        });
+    }
 
     public function rka()
     {

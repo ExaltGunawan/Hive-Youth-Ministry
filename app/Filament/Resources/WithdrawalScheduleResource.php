@@ -25,26 +25,54 @@ class WithdrawalScheduleResource extends Resource
                 Forms\Components\Select::make('pengambil_id')
                     ->relationship('pengambil', 'email')
                     ->required()
-                    ->label('Pengambil'),
+                    ->label('Pengambil')
+                    ->live()
+                    ->afterStateUpdated(fn (Forms\Set $set) => $set('divisi_name', null)),
+                
+                Forms\Components\Placeholder::make('divisi_name')
+                    ->label('Divisi Pengambil')
+                    ->content(function ($get) {
+                        $pengambilId = $get('pengambil_id');
+                        if (!$pengambilId) return '-';
+                        
+                        $user = \App\Models\User::find($pengambilId);
+                        return $user?->divisi?->nama_divisi ?? 'Tidak ada divisi';
+                    }),
+
                 Forms\Components\Select::make('rka_detail_id')
                     ->relationship('rkaDetail', 'item_name')
                     ->required()
-                    ->label('Item RKA'),
+                    ->label('Item RKA')
+                    ->live()
+                    ->afterStateUpdated(fn (Forms\Set $set) => $set('balance_info', null)),
+
+                Forms\Components\Placeholder::make('balance_info')
+                    ->label('Sisa Saldo Item RKA')
+                    ->content(function ($get) {
+                        $rkaDetailId = $get('rka_detail_id');
+                        if (!$rkaDetailId) return '-';
+                        
+                        $rkaDetail = \App\Models\RkaDetail::find($rkaDetailId);
+                        if (!$rkaDetail) return 'Data tidak ditemukan';
+                        
+                        return 'Rp ' . number_format($rkaDetail->balance, 0, ',', '.');
+                    }),
+
                 Forms\Components\TextInput::make('jumlah_diambil')
                     ->numeric()
                     ->prefix('Rp')
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'requested' => 'Requested',
-                        'verified' => 'Verified',
-                        'completed' => 'Completed',
-                    ])
                     ->required()
-                    ->default('requested'),
-                Forms\Components\Select::make('bendahara_id')
-                    ->relationship('bendahara', 'email')
-                    ->label('Bendahara (Verifier)'),
+                    ->rules([
+                        fn ($get): \Closure => function (string $attribute, $value, \Closure $fail) use ($get) {
+                            $rkaDetailId = $get('rka_detail_id');
+                            if (!$rkaDetailId) return;
+
+                            $rkaDetail = \App\Models\RkaDetail::find($rkaDetailId);
+                            if ($rkaDetail && $value > $rkaDetail->balance) {
+                                $fail("Jumlah yang diambil (Rp " . number_format($value, 0, ',', '.') . ") melebihi sisa saldo yang tersedia (Rp " . number_format($rkaDetail->balance, 0, ',', '.') . ").");
+                            }
+                        },
+                    ]),
                 Forms\Components\Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
@@ -54,23 +82,31 @@ class WithdrawalScheduleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('pengambil.email')
+                Tables\Columns\TextColumn::make('pengambil.name')
                     ->label('Pengambil')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('pengambil.divisi.nama_divisi')
+                    ->label('Divisi')
+                    ->badge()
+                    ->color('primary'),
                 Tables\Columns\TextColumn::make('rkaDetail.item_name')
                     ->label('Item RKA')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('jumlah_diambil')
                     ->money('IDR')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'requested' => 'warning',
-                        'verified' => 'info',
-                        'completed' => 'success',
-                    }),
+                        'submitted' => 'warning',
+                        'approved' => 'success',
+                        'rejected' => 'danger',
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal Input')
                     ->dateTime()
                     ->sortable(),
             ])
@@ -78,19 +114,62 @@ class WithdrawalScheduleResource extends Resource
                 fn (WithdrawalSchedule $record): string => Pages\ViewWithdrawalSchedule::getUrl([$record->id]),
             )
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                        'requested' => 'Requested',
-                        'verified' => 'Verified',
-                        'completed' => 'Completed',
+                        'submitted' => 'Submitted',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
                     ]),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->hidden(fn (WithdrawalSchedule $record) => $record->status !== 'submitted' || !auth()->user()->hasRole('super_admin'))
+                    ->requiresConfirmation()
+                    ->action(function (WithdrawalSchedule $record) {
+                        $rkaDetail = $record->rkaDetail;
+                        
+                        if ($rkaDetail->balance < $record->jumlah_diambil) {
+                            \Filament\Notifications\Notification::make()
+                                ->title('Dana Tidak Cukup')
+                                ->body("Sisa saldo item RKA ({$rkaDetail->balance}) tidak mencukupi untuk penarikan ini.")
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+
+                        $rkaDetail->decrement('balance', $record->jumlah_diambil);
+                        $record->update(['status' => 'approved']);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Berhasil Disetujui')
+                            ->success()
+                            ->send();
+                    }),
+
+                Tables\Actions\Action::make('reject')
+                    ->label('Reject')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->hidden(fn (WithdrawalSchedule $record) => $record->status !== 'submitted' || !auth()->user()->hasRole('super_admin'))
+                    ->requiresConfirmation()
+                    ->action(function (WithdrawalSchedule $record) {
+                        $record->update(['status' => 'rejected']);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Berhasil Ditolak')
+                            ->info()
+                            ->send();
+                    }),
+
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
-                    ->hidden(fn ($record) => $record->trashed()),
-                Tables\Actions\DeleteAction::make(),
+                    ->hidden(fn ($record) => $record->trashed() || $record->status !== 'submitted'),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(fn ($record) => $record->status !== 'submitted'),
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
             ])

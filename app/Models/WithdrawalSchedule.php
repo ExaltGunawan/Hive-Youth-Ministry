@@ -15,19 +15,13 @@ class WithdrawalSchedule extends Model
         'pengambil_id',
         'rka_detail_id',
         'jumlah_diambil',
-        'notes',
         'status',
-        'bendahara_id',
+        'notes',
     ];
 
     public function pengambil()
     {
         return $this->belongsTo(User::class, 'pengambil_id');
-    }
-
-    public function bendahara()
-    {
-        return $this->belongsTo(User::class, 'bendahara_id');
     }
 
     public function rkaDetail()

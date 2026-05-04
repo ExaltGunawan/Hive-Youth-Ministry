@@ -22,19 +22,30 @@ class RkaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('year')
-                    ->numeric()
-                    ->required()
-                    ->default(date('Y')),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'draft' => 'Draft',
-                        'pending' => 'Pending',
-                        'approved' => 'Approved',
-                        'rejected' => 'Rejected',
-                    ])
-                    ->required()
-                    ->default('draft'),
+                Forms\Components\Grid::make(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('year')
+                            ->numeric()
+                            ->required()
+                            ->default(date('Y')),
+                        Forms\Components\Select::make('month')
+                            ->options([
+                                'Januari' => 'Januari',
+                                'Februari' => 'Februari',
+                                'Maret' => 'Maret',
+                                'April' => 'April',
+                                'Mei' => 'Mei',
+                                'Juni' => 'Juni',
+                                'Juli' => 'Juli',
+                                'Agustus' => 'Agustus',
+                                'September' => 'September',
+                                'Oktober' => 'Oktober',
+                                'November' => 'November',
+                                'Desember' => 'Desember',
+                            ])
+                            ->required()
+                            ->searchable(),
+                    ]),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
                 Forms\Components\Hidden::make('created_by')
@@ -45,16 +56,39 @@ class RkaResource extends Resource
                         Forms\Components\Repeater::make('details')
                             ->relationship()
                             ->schema([
+                                Forms\Components\TextInput::make('id')
+                                    ->label('ID Detail')
+                                    ->numeric()
+                                    ->placeholder('Input ID...')
+                                    ->helperText('Masukkan ID secara manual jika diperlukan'),
                                 Forms\Components\TextInput::make('item_name')
                                     ->required(),
                                 Forms\Components\TextInput::make('amount')
                                     ->numeric()
                                     ->prefix('Rp')
-                                    ->required(),
-                                Forms\Components\TextInput::make('category'),
-                                Forms\Components\Textarea::make('notes'),
+                                    ->required()
+                                    ->live(onBlur: true),
+                                Forms\Components\Textarea::make('notes')
+                                    ->columnSpanFull(),
                             ])
-                            ->columns(2)
+                            ->columns(2),
+                        
+                        Forms\Components\Placeholder::make('total_amount_placeholder')
+                            ->label('')
+                            ->content(function ($get) {
+                                $total = collect($get('details'))
+                                    ->pluck('amount')
+                                    ->sum();
+                                
+                                $formattedTotal = 'Rp ' . number_format($total, 0, ',', '.');
+                                
+                                return new \Illuminate\Support\HtmlString("
+                                    <div class='flex items-center justify-between p-4 bg-primary-500/10 border border-primary-500/20 rounded-xl'>
+                                        <span class='text-sm font-bold text-gray-400 uppercase tracking-wider'>Total Anggaran Terakumulasi:</span>
+                                        <span class='text-2xl font-black text-primary-500'>{$formattedTotal}</span>
+                                    </div>
+                                ");
+                            })
                     ])
             ]);
     }
@@ -65,14 +99,13 @@ class RkaResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('year')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'draft' => 'gray',
-                        'pending' => 'warning',
-                        'approved' => 'success',
-                        'rejected' => 'danger',
-                    }),
+                Tables\Columns\TextColumn::make('month')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('details_sum_amount')
+                    ->sum('details', 'amount')
+                    ->label('Total Anggaran')
+                    ->money('IDR')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('creator.email')
                     ->label('Created By'),
                 Tables\Columns\TextColumn::make('created_at')
@@ -83,13 +116,6 @@ class RkaResource extends Resource
                 fn (Rka $record): string => Pages\ViewRka::getUrl([$record->id]),
             )
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'draft' => 'Draft',
-                        'pending' => 'Pending',
-                        'approved' => 'Approved',
-                        'rejected' => 'Rejected',
-                    ]),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

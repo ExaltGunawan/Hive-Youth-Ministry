@@ -13,8 +13,8 @@ class Rka extends Model
 
     protected $fillable = [
         'year',
+        'month',
         'description',
-        'status',
         'created_by',
     ];
 
