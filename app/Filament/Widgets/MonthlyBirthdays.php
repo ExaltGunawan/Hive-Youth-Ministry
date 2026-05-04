@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class MonthlyBirthdays extends BaseWidget
 {
-    protected static ?int $sort = 6;
+    protected static ?int $sort = 12;
     protected int | string | array $columnSpan = 1;
-    protected static ?string $heading = "This Month's Birthdays";
+    protected static ?string $heading = "Birthdays";
 
     public function table(Table $table): Table
     {
@@ -21,22 +21,16 @@ class MonthlyBirthdays extends BaseWidget
                 Member::query()
                     ->whereMonth('tanggal_lahir', now()->month)
                     ->orderByRaw('EXTRACT(DAY FROM tanggal_lahir) ASC')
+                    ->limit(3)
             )
             ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama')
-                    ->searchable(),
+                    ->limit(15),
                 Tables\Columns\TextColumn::make('tanggal_lahir')
-                    ->label('Tanggal')
-                    ->date('d F')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('instagram')
-                    ->label('Instagram')
-                    ->icon('heroicon-m-camera')
-                    ->url(fn ($record) => $record->instagram ? "https://instagram.com/" . str_replace('@', '', $record->instagram) : null)
-                    ->openUrlInNewTab()
-                    ->placeholder('-'),
+                    ->label('Tgl')
+                    ->date('d/m'),
             ])
             ->recordUrl(
                 fn (Member $record): string => \App\Filament\Resources\MemberResource::getUrl('view', ['record' => $record]),

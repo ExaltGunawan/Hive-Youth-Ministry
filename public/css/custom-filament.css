@@ -157,18 +157,54 @@ html, body {
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* CRITICAL: Force all Filament wrapper containers to be transparent */
+/* CRITICAL: Force all Filament wrapper containers to be transparent and shadowless */
 .fi-wi-widget,
 .fi-wi-stats-overview,
 .fi-wi-stats-overview > div,
+.fi-wi-stats-overview > div > div,
+.fi-wi-stats-overview > dl,
+.fi-wi-stats-overview-stats-ctn,
+.fi-wi-stats-overview-stat-ctn,
 .fi-section-content-ctn,
 .fi-ta-ctn-content,
-.fi-wi-stats-overview > dl {
+.fi-section-header,
+.fi-section-header-ctn,
+.fi-wi-widgets,
+.fi-wi-widgets > div,
+.fi-wi-widgets > section,
+.fi-section,
+.fi-main > div > div,
+[class*="fi-wi-"],
+[class*="fi-wi-"] > div,
+[class*="fi-wi-"] > section {
     background: transparent !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     padding: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Re-apply styling ONLY to the actual intended cards */
+.fi-wi-stats-overview-stat,
+.fi-section.fi-card,
+.fi-ta-ctn {
+    background: rgba(255, 255, 255, 0.02) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 32px !important;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
+:root:not(.dark) .fi-wi-stats-overview-stat,
+:root:not(.dark) .fi-section.fi-card,
+:root:not(.dark) .fi-ta-ctn {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Hover Interactivity */

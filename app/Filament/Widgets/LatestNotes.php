@@ -9,7 +9,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestNotes extends BaseWidget
 {
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 10;
     protected int | string | array $columnSpan = 1;
 
     public function table(Table $table): Table
@@ -17,15 +17,15 @@ class LatestNotes extends BaseWidget
         return $table
             ->paginated(false)
             ->query(
-                Note::latest()->limit(5)
+                Note::latest()->limit(3)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Judul Notulensi'),
+                    ->label('Judul')
+                    ->limit(15),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Tanggal')
-                    ->date()
-                    ->sortable(),
+                    ->label('Tgl')
+                    ->date('d/m'),
             ])
             ->recordUrl(
                 fn (Note $record): string => \App\Filament\Resources\NoteResource::getUrl('view', ['record' => $record]),

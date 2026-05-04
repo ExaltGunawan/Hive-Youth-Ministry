@@ -13,6 +13,7 @@ class RkaDetail extends Model
 
     protected $fillable = [
         'rka_id',
+        'manual_id',
         'item_name',
         'amount',
         'balance',

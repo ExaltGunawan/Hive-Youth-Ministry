@@ -9,7 +9,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class UpcomingSchedules extends BaseWidget
 {
-    protected static ?int $sort = 5;
+    protected static ?int $sort = 11;
     protected int | string | array $columnSpan = 1;
 
     public function table(Table $table): Table
@@ -20,17 +20,15 @@ class UpcomingSchedules extends BaseWidget
                 Schedule::where('tanggal', '>=', now())
                     ->where('tanggal', '<=', now()->addMonth())
                     ->orderBy('tanggal', 'asc')
+                    ->limit(3)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('schedule_name')
-                    ->label('Kegiatan'),
+                    ->label('Kegiatan')
+                    ->limit(15),
                 Tables\Columns\TextColumn::make('tanggal')
-                    ->label('Tanggal')
-                    ->date(),
-                Tables\Columns\TextColumn::make('jam')
-                    ->label('Waktu'),
-                Tables\Columns\TextColumn::make('tempat')
-                    ->label('Lokasi'),
+                    ->label('Tgl')
+                    ->date('d/m'),
             ])
             ->recordUrl(
                 fn (Schedule $record): string => \App\Filament\Resources\ScheduleResource::getUrl('view', ['record' => $record]),

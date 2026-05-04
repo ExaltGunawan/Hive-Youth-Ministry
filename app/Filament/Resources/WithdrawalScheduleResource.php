@@ -40,7 +40,12 @@ class WithdrawalScheduleResource extends Resource
                     }),
 
                 Forms\Components\Select::make('rka_detail_id')
-                    ->relationship('rkaDetail', 'item_name')
+                    ->relationship(
+                        name: 'rkaDetail',
+                        titleAttribute: 'item_name',
+                        modifyQueryUsing: fn (\Illuminate\Database\Eloquent\Builder $query) => $query->whereHas('rka'),
+                    )
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->manual_id} - {$record->item_name}")
                     ->required()
                     ->label('Item RKA')
                     ->live()

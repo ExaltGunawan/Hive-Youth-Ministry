@@ -56,11 +56,10 @@ class RkaResource extends Resource
                         Forms\Components\Repeater::make('details')
                             ->relationship()
                             ->schema([
-                                Forms\Components\TextInput::make('id')
+                                Forms\Components\TextInput::make('manual_id')
                                     ->label('ID Detail')
-                                    ->numeric()
-                                    ->placeholder('Input ID...')
-                                    ->helperText('Masukkan ID secara manual jika diperlukan'),
+                                    ->placeholder('e.g. 1.14.45')
+                                    ->helperText('Masukkan format ID (contoh: 1.14.45)'),
                                 Forms\Components\TextInput::make('item_name')
                                     ->required(),
                                 Forms\Components\TextInput::make('amount')
