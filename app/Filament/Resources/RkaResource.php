@@ -106,6 +106,12 @@ class RkaResource extends Resource
                     ->label('Total Anggaran')
                     ->money('IDR')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('details_sum_balance')
+                    ->sum('details', 'balance')
+                    ->label('Sisa Anggaran')
+                    ->money('IDR')
+                    ->sortable()
+                    ->color('success'),
                 Tables\Columns\TextColumn::make('creator.email')
                     ->label('Created By'),
                 Tables\Columns\TextColumn::make('created_at')

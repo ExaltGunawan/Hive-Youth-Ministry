@@ -144,6 +144,16 @@ class WithdrawalScheduleResource extends Resource
                         $rkaDetail->decrement('balance', $record->jumlah_diambil);
                         $record->update(['status' => 'approved']);
 
+                        // Automatically create ExpenditureReport when approved
+                        \App\Models\ExpenditureReport::create([
+                            'month' => $record->created_at->format('F'),
+                            'year' => $record->created_at->year,
+                            'withdrawal_schedule_id' => $record->id,
+                            'actual_amount' => $record->jumlah_diambil, // Default to taken amount
+                            'created_by' => auth()->id(),
+                            'notes' => 'Otomatis dibuat dari persetujuan pengambilan dana.',
+                        ]);
+
                         \Filament\Notifications\Notification::make()
                             ->title('Berhasil Disetujui')
                             ->success()
@@ -169,7 +179,22 @@ class WithdrawalScheduleResource extends Resource
                 Tables\Actions\EditAction::make()
                     ->hidden(fn ($record) => $record->trashed() || $record->status !== 'submitted'),
                 Tables\Actions\DeleteAction::make()
-                    ->hidden(fn ($record) => $record->status !== 'submitted'),
+                    ->hidden(fn (WithdrawalSchedule $record) => 
+                        $record->trashed() || 
+                        ($record->status !== 'submitted' && !auth()->user()->hasRole('super_admin'))
+                    )
+                    ->before(function (WithdrawalSchedule $record) {
+                        // If an approved record is deleted by Super Admin, restore the balance
+                        if ($record->status === 'approved') {
+                            $rkaDetail = $record->rkaDetail;
+                            if ($rkaDetail) {
+                                $rkaDetail->increment('balance', $record->jumlah_diambil);
+                            }
+
+                            // Also delete the associated automatic expenditure report
+                            \App\Models\ExpenditureReport::where('withdrawal_schedule_id', $record->id)->delete();
+                        }
+                    }),
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
             ])
