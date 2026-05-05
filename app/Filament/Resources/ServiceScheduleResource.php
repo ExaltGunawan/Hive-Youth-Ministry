@@ -97,8 +97,7 @@ class ServiceScheduleResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('worshipTitle.title')
                     ->label('Worship Title')
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->label('Tanggal')
                     ->date()
@@ -106,8 +105,7 @@ class ServiceScheduleResource extends Resource
                 Tables\Columns\TextColumn::make('pic.nama_lengkap')
                     ->label('PIC')
                     ->badge()
-                    ->color('primary')
-                    ->searchable(),
+                    ->color('primary'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -137,3 +135,4 @@ class ServiceScheduleResource extends Resource
         ];
     }
 }
+

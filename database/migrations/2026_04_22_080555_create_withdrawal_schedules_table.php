@@ -9,12 +9,11 @@ return new class extends Migration {
     {
         Schema::create('withdrawal_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_pengambil')->constrained('users');
-            $table->foreignId('id_sumber')->constrained('rka_details');
-            $table->bigInteger('jumlah_diambil');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ID Pengambil
+            $table->foreignId('rka_item_id')->nullable()->constrained('rka_items')->onDelete('cascade');
+            $table->bigInteger('amount');
             $table->text('notes')->nullable();
-            $table->enum('status', ['requested', 'verified', 'completed'])->default('requested');
-            $table->foreignId('id_bendahara')->nullable()->constrained('users');
+            $table->string('status')->default('requested'); // Simple string status
             $table->softDeletes();
             $table->timestamps();
         });

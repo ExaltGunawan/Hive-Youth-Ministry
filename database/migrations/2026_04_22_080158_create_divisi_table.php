@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('divisi', function (Blueprint $table) {
             $table->id();
             $table->string('nama_divisi');
+            $table->string('color')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

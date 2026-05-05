@@ -9,10 +9,12 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class RkaResource extends Resource
 {
     protected static ?string $model = Rka::class;
+    protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationGroup = 'Finance';
@@ -22,68 +24,79 @@ class RkaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(2)
+                Forms\Components\Section::make(new HtmlString('&nbsp;&nbsp;&nbsp;General Information'))
                     ->schema([
-                        Forms\Components\TextInput::make('year')
+                        Forms\Components\TextInput::make('id')
+                            ->label('ID / Kode Anggaran')
+                            ->placeholder('e.g. 1 / A.1 / 2024-001')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama Program / Pembelian')
+                            ->placeholder('e.g. Sunday Run / Beli Kamera')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('fiscal_year')
+                            ->label('Tahun Fiskal')
                             ->numeric()
                             ->required()
                             ->default(date('Y')),
-                        Forms\Components\Select::make('month')
-                            ->options([
-                                'Januari' => 'Januari',
-                                'Februari' => 'Februari',
-                                'Maret' => 'Maret',
-                                'April' => 'April',
-                                'Mei' => 'Mei',
-                                'Juni' => 'Juni',
-                                'Juli' => 'Juli',
-                                'Agustus' => 'Agustus',
-                                'September' => 'September',
-                                'Oktober' => 'Oktober',
-                                'November' => 'November',
-                                'Desember' => 'Desember',
-                            ])
-                            ->required()
-                            ->searchable(),
-                    ]),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\Hidden::make('created_by')
-                    ->default(auth()->id()),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Deskripsi Singkat')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
 
-                Forms\Components\Section::make('RKA Details')
+                Forms\Components\Section::make(new HtmlString('&nbsp;&nbsp;&nbsp;Rincian Barang / Detail Anggaran'))
                     ->schema([
-                        Forms\Components\Repeater::make('details')
+                        Forms\Components\Repeater::make('items')
                             ->relationship()
+                            ->minItems(1)
                             ->schema([
-                                Forms\Components\TextInput::make('manual_id')
-                                    ->label('ID Detail')
-                                    ->placeholder('e.g. 1.14.45')
-                                    ->helperText('Masukkan format ID (contoh: 1.14.45)'),
                                 Forms\Components\TextInput::make('item_name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('amount')
+                                    ->label('Nama Barang / Detail')
+                                    ->required()
+                                    ->placeholder('e.g. Minum / Topi'),
+                                Forms\Components\TextInput::make('price')
+                                    ->label('Harga Satuan')
                                     ->numeric()
                                     ->prefix('Rp')
                                     ->required()
                                     ->live(onBlur: true),
-                                Forms\Components\Textarea::make('notes')
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label('Jumlah')
+                                    ->numeric()
+                                    ->default(1)
+                                    ->required()
+                                    ->live(onBlur: true),
+                                Forms\Components\Placeholder::make('sub_total')
+                                    ->label('Sub-Total')
+                                    ->content(function ($get) {
+                                        $price = (float)($get('price') ?? 0);
+                                        $qty = (int)($get('quantity') ?? 1);
+                                        return 'Rp ' . number_format($price * $qty, 0, ',', '.');
+                                    })
+                                    ->extraAttributes(['class' => 'font-bold text-primary-600']),
+                                Forms\Components\TextInput::make('notes')
+                                    ->label('Keterangan')
+                                    ->placeholder('e.g. Merk Aqua')
                                     ->columnSpanFull(),
                             ])
-                            ->columns(2),
+                            ->columns(4)
+                            ->itemLabel(fn (array $state): ?string => $state['item_name'] ?? null),
                         
                         Forms\Components\Placeholder::make('total_amount_placeholder')
                             ->label('')
                             ->content(function ($get) {
-                                $total = collect($get('details'))
-                                    ->pluck('amount')
-                                    ->sum();
+                                $items = collect($get('items') ?? []);
+                                $total = $items->sum(fn ($item) => (float)($item['price'] ?? 0) * (int)($item['quantity'] ?? 1));
                                 
                                 $formattedTotal = 'Rp ' . number_format($total, 0, ',', '.');
                                 
-                                return new \Illuminate\Support\HtmlString("
+                                return new HtmlString("
                                     <div class='flex items-center justify-between p-4 bg-primary-500/10 border border-primary-500/20 rounded-xl'>
-                                        <span class='text-sm font-bold text-gray-400 uppercase tracking-wider'>Total Anggaran Terakumulasi:</span>
+                                        <span class='text-sm font-bold text-gray-400 uppercase tracking-wider'>Total Anggaran Program:</span>
                                         <span class='text-2xl font-black text-primary-500'>{$formattedTotal}</span>
                                     </div>
                                 ");
@@ -96,48 +109,49 @@ class RkaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('year')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('month')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('details_sum_amount')
-                    ->sum('details', 'amount')
-                    ->label('Total Anggaran')
-                    ->money('IDR')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('details_sum_balance')
-                    ->sum('details', 'balance')
-                    ->label('Sisa Anggaran')
-                    ->money('IDR')
-                    ->sortable()
-                    ->color('success'),
-                Tables\Columns\TextColumn::make('creator.email')
-                    ->label('Created By'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable(),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('id')
+                        ->label('ID')
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('name')
+                        ->label('Nama Program')
+                        ->sortable()
+                        ->description(fn (Rka $record): string => $record->description ? str($record->description)->limit(40) : ''),
+                    Tables\Columns\TextColumn::make('items_sum_total')
+                        ->label('Total Anggaran')
+                        ->money('IDR')
+                        ->getStateUsing(function (Rka $record) {
+                            return $record->items->sum(fn ($item) => $item->price * $item->quantity);
+                        })
+                        ->sortable(false)
+                        ->color('gray'),
+                    Tables\Columns\TextColumn::make('remaining_balance')
+                        ->label('Sisa Dana')
+                        ->money('IDR')
+                        ->getStateUsing(function (Rka $record) {
+                            return $record->items->sum(fn ($item) => $item->remaining_balance);
+                        })
+                        ->sortable(false)
+                        ->weight('bold')
+                        ->color('primary')
+                        ->alignEnd(),
+                ]),
+                Tables\Columns\Layout\Panel::make([
+                    Tables\Columns\Layout\View::make('filament.resources.rka.row-content'),
+                ])->collapsible(),
             ])
-            ->recordUrl(
-                fn (Rka $record): string => Pages\ViewRka::getUrl([$record->id]),
-            )
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
-                    ->hidden(fn ($record) => $record->trashed()),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
+                    ->button()
+                    ->size('sm'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->size('sm'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                ]),
-            ]);
+            ->actionsColumnLabel('Aksi');
     }
 
     public static function getPages(): array
@@ -145,8 +159,8 @@ class RkaResource extends Resource
         return [
             'index' => Pages\ListRkas::route('/'),
             'create' => Pages\CreateRka::route('/create'),
-            'view' => Pages\ViewRka::route('/{record}'),
             'edit' => Pages\EditRka::route('/{record}/edit'),
         ];
     }
 }
+

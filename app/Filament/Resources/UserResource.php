@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+    protected static ?string $recordTitleAttribute = 'email';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $navigationGroup = 'Pengaturan';
@@ -68,10 +69,8 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('member.nama_lengkap')
                     ->label('Nama Pengurus')
-                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('role')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -121,3 +120,4 @@ class UserResource extends Resource
         ];
     }
 }
+

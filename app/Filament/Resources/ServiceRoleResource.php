@@ -32,8 +32,7 @@ class ServiceRoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('role_name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('role_name'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -67,3 +66,4 @@ class ServiceRoleResource extends Resource
         ];
     }
 }
+

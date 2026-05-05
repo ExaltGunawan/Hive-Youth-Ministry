@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 class WorshipThemeResource extends Resource
 {
     protected static ?string $model = WorshipTheme::class;
+    protected static ?string $recordTitleAttribute = 'theme_title';
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $navigationGroup = 'Worship Title';
@@ -39,8 +40,7 @@ class WorshipThemeResource extends Resource
                 Tables\Columns\TextColumn::make('month')
                     ->date('F Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('theme_title')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('theme_title'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -74,3 +74,4 @@ class WorshipThemeResource extends Resource
         ];
     }
 }
+

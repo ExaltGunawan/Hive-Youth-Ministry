@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 class MemberResource extends Resource
 {
     protected static ?string $model = Member::class;
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'Database Jemaat';
@@ -88,10 +89,8 @@ class MemberResource extends Resource
                 Tables\Columns\ImageColumn::make('photo')
                     ->circular(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
-                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nama_panggilan')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('nama_panggilan'),
                 Tables\Columns\TextColumn::make('instagram')
                     ->label('Instagram')
                     ->icon('heroicon-m-camera')
@@ -105,8 +104,7 @@ class MemberResource extends Resource
                         'Simpatisan' => 'warning',
                         'Unknown' => 'gray',
                     }),
-                Tables\Columns\TextColumn::make('kontak')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('kontak'),
                 Tables\Columns\TextColumn::make('angkatan')
                     ->sortable(),
             ])
@@ -149,3 +147,4 @@ class MemberResource extends Resource
         ];
     }
 }
+

@@ -21,14 +21,50 @@
 
 html, body {
     background: var(--overlay-color-2) !important;
-    height: 100% !important;
+    height: 100vh !important;
     margin: 0 !important;
-    overflow-x: hidden !important; /* Prevent horizontal scrolling on mobile */
+    overflow: hidden !important; /* Lock global scroll */
+}
+
+/* 1. LOCK TOPBAR & NAVBAR GLOBALLY */
+.fi-main-ctn { 
+    height: 100vh !important; 
+    overflow: hidden !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+}
+
+.fi-main-ctn > main { 
+    flex: 1 !important; 
+    overflow-y: auto !important; 
+    scroll-behavior: smooth; 
+}
+
+/* 2. GLOBAL SIDEBAR LOGO FIX - NO MORE LEAKS */
+.fi-sidebar-header { 
+    padding-top: 3.5rem !important; 
+}
+
+/* 3. TARGETED RKA PADDING - FIXES SIDEBAR OVERLAP FOR RKA ONLY */
+.fi-resource-rka .fi-main-ctn > main > div {
+    padding-left: 4rem !important;
+}
+
+@media (max-width: 1024px) {
+    .fi-resource-rka .fi-main-ctn > main > div {
+        padding-left: 1rem !important;
+    }
+}
+    margin-bottom: 1rem !important; 
+}
+.fi-sidebar-nav { 
+    margin-top: 1rem !important; 
 }
 
 .fi-layout {
     max-width: 100vw !important;
-    overflow-x: hidden !important;
+    height: 100vh !important;
+    overflow: hidden !important;
 }
 
 
@@ -143,7 +179,7 @@ html, body {
     border-radius: 32px !important;
     box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-    overflow: hidden !important;
+    overflow: visible !important;
 }
 
 /* Light Mode Card Styling - FIX GHOST BOXES */
@@ -455,7 +491,7 @@ html, body {
     box-shadow: none !important;
     padding: 1.25rem !important;
     position: relative !important;
-    z-index: 50 !important;
+    z-index: 10 !important;
     height: 100% !important;
 }
 
@@ -500,7 +536,7 @@ html, body {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    z-index: 100 !important;
+    z-index: 20 !important;
     background: transparent !important;
     border: none !important; /* Ensure no border here */
     outline: none !important;
@@ -648,7 +684,7 @@ html, body {
     height: 4rem !important;
     display: flex !important;
     align-items: center !important;
-    z-index: 100 !important;
+    z-index: 10 !important;
 }
 
 .fi-topbar-header-container {

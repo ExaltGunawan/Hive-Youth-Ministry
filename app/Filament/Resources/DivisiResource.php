@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 class DivisiResource extends Resource
 {
     protected static ?string $model = Divisi::class;
+    protected static ?string $recordTitleAttribute = 'nama_divisi';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Pengaturan';
@@ -34,8 +35,7 @@ class DivisiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_divisi')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('nama_divisi'),
                 Tables\Columns\ColorColumn::make('color'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -74,3 +74,4 @@ class DivisiResource extends Resource
         ];
     }
 }
+

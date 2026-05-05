@@ -11,9 +11,13 @@ class Rka extends Model
     use SoftDeletes;
     use HasFactory;
 
+    public $incrementing = false; // Disable auto-increment
+    protected $keyType = 'string'; // Use string for ID
+
     protected $fillable = [
-        'year',
-        'month',
+        'id', // Manual ID
+        'name',
+        'fiscal_year',
         'description',
         'created_by',
     ];
@@ -23,8 +27,8 @@ class Rka extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function details()
+    public function items()
     {
-        return $this->hasMany(RkaDetail::class);
+        return $this->hasMany(RkaItem::class);
     }
 }

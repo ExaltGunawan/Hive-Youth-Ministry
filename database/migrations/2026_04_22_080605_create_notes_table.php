@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->LONGTEXT('value');
             $table->jsonb('allowed_viewers')->nullable();
             $table->text('conclusion')->nullable();
+            $table->integer('attendance')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 class NoteResource extends Resource
 {
     protected static ?string $model = Note::class;
+    protected static ?string $recordTitleAttribute = 'title';
 
     protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
     protected static ?string $navigationGroup = 'Secretary';
@@ -62,7 +63,6 @@ class NoteResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->label('Judul')
-                    ->searchable()
                     ->sortable()
                     ->default('(Tanpa Judul)'),
                 Tables\Columns\TextColumn::make('value')
@@ -144,3 +144,4 @@ class NoteResource extends Resource
         ];
     }
 }
+

@@ -50,15 +50,13 @@ class ScheduleResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('divisi.nama_divisi')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('schedule_name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('schedule_name'),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jam')
                     ->time(),
-                Tables\Columns\TextColumn::make('tempat')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('tempat'),
             ])
             ->recordUrl(
                 fn (Schedule $record): string => Pages\ViewSchedule::getUrl([$record->id]),
@@ -96,3 +94,4 @@ class ScheduleResource extends Resource
         ];
     }
 }
+

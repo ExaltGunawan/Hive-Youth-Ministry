@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 class WorshipTitleResource extends Resource
 {
     protected static ?string $model = WorshipTitle::class;
+    protected static ?string $recordTitleAttribute = 'title';
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationGroup = 'Worship Title';
@@ -44,13 +45,11 @@ class WorshipTitleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scripture')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('scripture'),
                 Tables\Columns\TextColumn::make('background_context')
                     ->limit(50)
                     ->wrap(),
@@ -88,3 +87,4 @@ class WorshipTitleResource extends Resource
         ];
     }
 }
+
