@@ -46,6 +46,7 @@ class WithdrawalRequestResource extends Resource
                                 'submitted' => 'Submitted',
                                 'more_info' => 'Need More Info',
                                 'approved' => 'Approved',
+                                'rejected' => 'Rejected',
                                 'actualized' => 'Actualized',
                             ])
                             ->default('submitted')
@@ -65,7 +66,7 @@ class WithdrawalRequestResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('rka_id')
                                     ->label('Pilih RKA')
-                                    ->options(Rka::all()->pluck('name', 'id'))
+                                    ->options(Rka::all()->pluck('name', 'id')->map(fn ($name) => $name ?? 'Untitled RKA'))
                                     ->live()
                                     ->required()
                                     ->afterStateHydrated(function (Forms\Components\Select $component, $record, $state) {
@@ -80,7 +81,7 @@ class WithdrawalRequestResource extends Resource
                                         RkaItem::where('rka_id', $get('rka_id'))
                                             ->get()
                                             ->mapWithKeys(fn ($item) => [
-                                                $item->id => "{$item->item_name} (Sisa: Rp " . number_format($item->remaining_balance, 0, ',', '.') . ")"
+                                                $item->id => ($item->manual_id ? $item->manual_id . ' - ' : '') . ($item->item_name ?? 'Unnamed Item') . " (Sisa: Rp " . number_format($item->remaining_balance ?? 0, 0, ',', '.') . ")"
                                             ])
                                     )
                                     ->required()
@@ -146,6 +147,11 @@ class WithdrawalRequestResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Pengaju')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('user.divisi.nama_divisi')
+                    ->label('Divisi')
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
                 Tables\Columns\TextColumn::make('withdrawal_date')
                     ->label('Tgl Ambil')
                     ->date()
@@ -156,6 +162,7 @@ class WithdrawalRequestResource extends Resource
                         'submitted' => 'gray',
                         'more_info' => 'warning',
                         'approved' => 'success',
+                        'rejected' => 'danger',
                         'actualized' => 'primary',
                     }),
                 Tables\Columns\TextColumn::make('items_sum_requested_amount')
@@ -183,11 +190,13 @@ class WithdrawalRequestResource extends Resource
                         'submitted' => 'Submitted (Menunggu Persetujuan)',
                         'more_info' => 'Need More Info (Perlu Diskusi)',
                         'approved' => 'Approved (Disetujui / Uang Cair)',
+                        'rejected' => 'Rejected (Ditolak)',
                         'actualized' => 'Actualized (Selesai & Dilaporkan)',
                     ]),
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('Pengaju')
                     ->relationship('user', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name ?? $record->email ?? 'Unknown User')
                     ->searchable()
                     ->preload()
                     ->visible(fn () => Auth::user()->hasRole(['super_admin', 'bendahara'])),

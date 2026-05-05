@@ -54,6 +54,10 @@ class RkaResource extends Resource
                             ->relationship()
                             ->minItems(1)
                             ->schema([
+                                Forms\Components\TextInput::make('manual_id')
+                                    ->label('ID Detail')
+                                    ->placeholder('e.g. 1.14.45')
+                                    ->maxLength(50),
                                 Forms\Components\TextInput::make('item_name')
                                     ->label('Nama Barang / Detail')
                                     ->required()
@@ -83,8 +87,8 @@ class RkaResource extends Resource
                                     ->placeholder('e.g. Merk Aqua')
                                     ->columnSpanFull(),
                             ])
-                            ->columns(4)
-                            ->itemLabel(fn (array $state): ?string => $state['item_name'] ?? null),
+                            ->columns(5)
+                            ->itemLabel(fn (array $state): string => ($state['manual_id'] ? $state['manual_id'] . ' - ' : '') . ($state['item_name'] ?? '')),
                         
                         Forms\Components\Placeholder::make('total_amount_placeholder')
                             ->label('')

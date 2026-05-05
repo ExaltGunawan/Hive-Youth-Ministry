@@ -118,6 +118,15 @@ class AdminPanelProvider extends PanelProvider
                                             <span class="shortcut-desc">Assignment</span>
                                         </div>
                                     </a>
+                                    <a href="/admin/withdrawal-requests/create" class="header-shortcut-card">
+                                        <div class="shortcut-icon-bg bg-cyan-500/20 text-cyan-400">
+                                            <x-heroicon-m-banknotes class="w-5 h-5"/>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="shortcut-label">Dana</span>
+                                            <span class="shortcut-desc">Ambil Uang</span>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

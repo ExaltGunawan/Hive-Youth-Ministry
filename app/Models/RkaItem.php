@@ -11,6 +11,7 @@ class RkaItem extends Model
 
     protected $fillable = [
         'rka_id',
+        'manual_id',
         'item_name',
         'price',
         'quantity',
@@ -33,7 +34,7 @@ class RkaItem extends Model
 
         $activeRequests = $this->withdrawalItems()
             ->whereHas('withdrawalRequest', function ($query) {
-                $query->whereIn('status', ['submitted', 'approved', 'more_info', 'actualized']);
+                $query->whereIn('status', ['approved', 'actualized']);
             })
             ->get();
 
