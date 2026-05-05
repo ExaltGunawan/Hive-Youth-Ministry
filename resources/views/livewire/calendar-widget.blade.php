@@ -75,10 +75,11 @@
                 style="{{ $isActive ? "background-color: white; border-color: " . ($div->color ?? '#E5E7EB') . ";" : "" }}">
                 <div class="w-3 h-3 rounded-full shadow-inner" style="background-color: {{ $div->color ?? '#E5E7EB' }}"></div>
                 <span @class([
-                    'text-[10px] font-black uppercase tracking-widest italic transition-colors',
+                    'text-[10px] font-[1000] uppercase tracking-widest italic transition-colors',
                     'text-gray-900' => $isActive,
                     'text-gray-400 group-hover:text-gray-600' => !$isActive,
-                ])>
+                ])
+                style="{{ $isActive ? "color: " . ($div->color ?? '#111827') . "; filter: brightness(0.8) contrast(1.2);" : "" }}">
                     {{ $div->nama_divisi }}
                 </span>
             </button>

@@ -211,21 +211,60 @@ html, body {
 /* Standardized Glassmorphism for actual cards only */
 .fi-wi-stats-overview-stat,
 .fi-section.fi-card,
-.fi-ta-ctn {
-    background: rgba(255, 255, 255, 0.02) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+.fi-ta-ctn,
+.fi-wi-widget > .fi-section,
+.fi-wi-widget > div {
+    background: rgba(15, 15, 20, 0.6) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
     border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    border-radius: 32px !important;
-    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3) !important;
+    border-radius: 28px !important;
+    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.6) !important;
     transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
     overflow: visible !important;
+    margin-bottom: 0 !important;
+    height: 100% !important; /* Force equal height in rows */
+}
+
+/* Dark Mode Specific Overrides for Definition */
+:root.dark .fi-wi-stats-overview-stat,
+:root.dark .fi-section.fi-card,
+:root.dark .fi-ta-ctn,
+:root.dark .fi-wi-widget > .fi-section,
+:root.dark .fi-wi-widget > div {
+    background: rgba(10, 10, 12, 0.8) !important; /* MUCH Darker background */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important; /* Subtle but clear border */
+    box-shadow: 0 30px 70px -10px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Force internal padding consistency and normalize spacing */
+.fi-section-header,
+.fi-ta-header {
+    padding: 1.5rem 2rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+    background: transparent !important;
+}
+
+.fi-section-content,
+.fi-ta-content,
+.fi-section-content-ctn {
+    padding: 2rem !important;
+    background: transparent !important;
+}
+
+/* Remove default shadows/rings from internal containers that cause nesting issues */
+.fi-section {
+    box-shadow: none !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
 }
 
 /* Light Mode Card Styling - FIX GHOST BOXES */
 :root:not(.dark) .fi-wi-stats-overview-stat,
 :root:not(.dark) .fi-section.fi-card,
-:root:not(.dark) .fi-ta-ctn {
+:root:not(.dark) .fi-ta-ctn,
+:root:not(.dark) .fi-wi-widget > .fi-section,
+:root:not(.dark) .fi-wi-widget > div {
     background: rgba(255, 255, 255, 0.8) !important;
     backdrop-filter: blur(10px) !important;
     border: 1px solid rgba(0, 0, 0, 0.05) !important;
@@ -263,6 +302,18 @@ html, body {
     --tw-ring-shadow: 0 0 #0000 !important;
     --tw-shadow: 0 0 #0000 !important;
     --tw-shadow-colored: 0 0 #0000 !important;
+    --tw-ring-color: transparent !important;
+}
+
+/* Specific fix for the long white box in stats overview */
+.fi-wi-stats-overview > div,
+.fi-wi-stats-overview > dl {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
 }
 
 /* Re-apply styling ONLY to the actual intended cards */
@@ -447,8 +498,12 @@ html, body {
 
 /* Custom Grid for Dashboard Widgets */
 .fi-wi-widgets {
-    gap: 1.5rem !important;
-    align-items: stretch !important;
+    gap: 2rem !important;
+    padding-top: 1rem !important;
+}
+
+.fi-wi-widget {
+    margin-bottom: 0 !important;
 }
 
 
@@ -982,6 +1037,13 @@ html, body {
         justify-content: center !important;
         align-items: center !important;
     }
+
+/* Base Background Override for True Dark Mode */
+:root.dark .fi-main,
+:root.dark .fi-app,
+:root.dark body {
+    background-color: #050507 !important;
+}
 
     .fi-logo, .fi-sidebar-header img {
         max-height: 5rem !important;

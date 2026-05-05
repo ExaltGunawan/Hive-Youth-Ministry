@@ -49,8 +49,8 @@
                         </div>
                         
                         <div class="shrink-0 flex items-center justify-between sm:justify-end gap-3 mt-2 sm:mt-0">
-                            <span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-white shadow-lg"
-                                  style="background-color: {{ $schedule->divisi->color ?? '#3b82f6' }}">
+                            <span class="px-4 py-1.5 rounded-full text-[9px] font-[1000] uppercase tracking-[0.15em] shadow-lg border-2 border-black/10"
+                                  style="background-color: {{ $schedule->divisi->color ?? '#3b82f6' }}; color: #000000; box-shadow: 0 4px 12px -2px {{ $schedule->divisi->color ?? '#3b82f6' }}88;">
                                 {{ $schedule->divisi->nama_divisi }}
                             </span>
                             <a href="{{ \App\Filament\Resources\ScheduleResource::getUrl('edit', ['record' => $schedule->id]) }}" 

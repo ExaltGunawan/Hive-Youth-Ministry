@@ -10,7 +10,7 @@ class WorshipOverview extends Widget
 {
     protected static string $view = 'filament.widgets.worship-overview';
     protected static ?int $sort = 1;
-    protected int | string | array $columnSpan = 1;
+    protected int | string | array $columnSpan = 'full';
 
     protected function getViewData(): array
     {

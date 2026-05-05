@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\Member;
 use App\Models\User;
+use App\Models\WithdrawalRequest;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -25,6 +26,11 @@ class StatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('primary')
                 ->url(\App\Filament\Resources\UserResource::getUrl()),
+            Stat::make('Pending Approval', WithdrawalRequest::where('status', 'submitted')->count())
+                ->description('Pengambilan dana tertunda')
+                ->descriptionIcon('heroicon-m-clock')
+                ->color('warning')
+                ->url(\App\Filament\Resources\WithdrawalRequestResource::getUrl()),
         ];
     }
 }
