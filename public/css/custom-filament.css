@@ -17,6 +17,28 @@
     --card-bg: rgba(255, 255, 255, 0.9);
     --text-main: #111827;
     --logo-image: url('/assets/Logow.png');
+    color-scheme: light !important;
+}
+
+/* FORCE LIGHT MODE FOR DATEPICKER */
+:root:not(.dark) .fi-fo-wizard-step-indicator,
+:root:not(.dark) .fi-fo-date-time-picker-picker,
+:root:not(.dark) .flatpickr-calendar {
+    background-color: white !important;
+    color: #111827 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+:root:not(.dark) .flatpickr-day, 
+:root:not(.dark) .flatpickr-weekday,
+:root:not(.dark) .flatpickr-month,
+:root:not(.dark) .flatpickr-current-month {
+    color: #111827 !important;
+    fill: #111827 !important;
+}
+
+:root:not(.dark) .flatpickr-day.flatpickr-disabled {
+    color: #e5e7eb !important;
 }
 
 html, body {
@@ -108,7 +130,7 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 18px;
     color: white;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: background 0.3s ease, border-color 0.3s ease;
     text-decoration: none !important;
     flex: 0 1 auto; /* Don't force grow, just fit content */
 }
@@ -116,8 +138,6 @@ html, body {
 .header-shortcut-card:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 .shortcut-icon-bg {
@@ -132,7 +152,7 @@ html, body {
 }
 
 .header-shortcut-card:hover .shortcut-icon-bg {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.05);
 }
 
 .shortcut-label {
@@ -336,18 +356,11 @@ html, body {
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Hover Interactivity */
+/* Remove Hover Interactivity that causes jitter */
 .fi-wi-stats-overview-stat:hover,
 .fi-section:hover,
 .fi-card:hover {
-    transform: translateY(-8px) !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
-}
-
-:root:not(.dark) .fi-wi-stats-overview-stat:hover,
-:root:not(.dark) .fi-section:hover,
-:root:not(.dark) .fi-card:hover {
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15) !important;
+    transform: none !important;
 }
 
 /* Global Widget Grid Spacing */
@@ -488,12 +501,12 @@ html, body {
     padding: 0 !important;
 }
 
-/* Interaction & Hover Effects */
+/* Interaction & Hover Effects - Disabled movement */
 .fi-wi-widget > div:hover,
 .fi-wi-stats-overview-stat:hover {
     border-color: rgba(255, 179, 0, 0.2) !important;
-    transform: translateY(-8px) !important;
-    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px 0 rgba(255, 179, 0, 0.05) !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
 /* Custom Grid for Dashboard Widgets */
@@ -606,7 +619,7 @@ html, body {
 .fi-sidebar::before {
     content: "" !important;
     position: absolute !important;
-    top: 10rem !important; /* Start lower to leave space for logo above it */
+    top: 10rem !important; /* KEMBALI KE ASLI */
     left: 1.25rem !important;
     right: 0 !important;
     bottom: 1.25rem !important;
@@ -631,13 +644,13 @@ html, body {
     top: 1.25rem !important;
     left: 0 !important;
     right: 0 !important;
-    height: 8rem !important;
+    height: 8rem !important; /* KEMBALI KE ASLI */
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     z-index: 20 !important;
     background: transparent !important;
-    border: none !important; /* Ensure no border here */
+    border: none !important;
     outline: none !important;
     box-shadow: none !important;
 }
@@ -662,14 +675,20 @@ html, body {
     transition: transform 0.3s ease;
 }
 
-/* 4. Navigasi Sidebar - Start inside the yellow box */
+/* 4. Navigasi Sidebar */
 .fi-sidebar-nav {
-    margin-top: 11rem !important; /* Start slightly below the yellow box top edge */
+    margin-top: 11rem !important; /* KEMBALI KE ASLI UNTUK PC */
     flex: 1 1 auto !important;
     padding: 0 0.75rem 2rem 0.75rem !important;
     background-color: transparent !important;
     overflow-y: auto !important;
     scrollbar-width: none !important;
+}
+
+@media (max-width: 1024px) {
+    .fi-sidebar-nav {
+        margin-top: 1.5rem !important; /* NILAI PAS DARI ANDA UNTUK HP */
+    }
 }
 
 /* Sembunyikan scrollbar untuk Chrome, Safari dan Opera */

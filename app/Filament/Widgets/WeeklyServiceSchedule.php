@@ -8,6 +8,8 @@ use Carbon\Carbon;
 
 class WeeklyServiceSchedule extends Widget
 {
+    use \BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+
     protected static string $view = 'filament.widgets.weekly-service-schedule';
     protected static ?int $sort = 2;
     protected int | string | array $columnSpan = 1;

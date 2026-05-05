@@ -31,6 +31,11 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->userMenuItems([
+                'profile' => \Filament\Navigation\MenuItem::make()
+                    ->url(fn (): string => \App\Filament\Pages\MyProfile::getUrl())
+                    ->label(fn() => auth()->user()->name),
+            ])
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -57,17 +62,16 @@ class AdminPanelProvider extends PanelProvider
                                 $greeting = "Good Evening,";
                             }
                         @endphp
-                        <div class="custom-header-bg mb-8 p-8 md:p-12 rounded-[40px] relative overflow-hidden group">
-                            <div class="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <div class="custom-header-bg mb-8 p-8 md:p-12 rounded-[40px] relative overflow-hidden">
                             <div class="relative z-10 flex flex-col gap-8">
                                 <div class="flex flex-col md:flex-row justify-between items-center md:items-end w-full gap-8 md:gap-0">
                                     <div class="text-center md:text-left">
                                         <h2 class="text-xl md:text-2xl font-medium opacity-70 tracking-tight">{{ $greeting }}</h2>
                                         <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mt-2">{{ auth()->user()->name }}</h1>
                                     </div>
-                                    <div class="text-center md:text-right hidden md:block">
-                                        <p class="text-lg font-bold opacity-60 tracking-widest uppercase">{{ now()->timezone("Asia/Jakarta")->format("l, d F Y") }}</p>
-                                        <p class="text-5xl font-black tracking-tighter mt-1">{{ now()->timezone("Asia/Jakarta")->format("H:i") }}</p>
+                                    <div class="text-center md:text-right mt-4 md:mt-0">
+                                        <p class="text-sm md:text-lg font-bold opacity-60 tracking-widest uppercase">{{ now()->timezone("Asia/Jakarta")->format("l, d F Y") }}</p>
+                                        <p class="text-3xl md:text-5xl font-black tracking-tighter mt-1">{{ now()->timezone("Asia/Jakarta")->format("H:i") }}</p>
                                     </div>
                                 </div>
 

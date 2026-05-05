@@ -10,6 +10,9 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
+    use \BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+
+    protected static string $view = 'filament.widgets.stats-overview-custom';
     protected static ?int $sort = 0;
     protected int | string | array $columnSpan = 'full';
 

@@ -9,7 +9,12 @@
                     </p>
                 </a>
             @else
-                <p class="text-gray-400 italic text-sm">Belum ada tema bulan ini</p>
+                <div class="py-12 flex flex-col items-center justify-center text-center opacity-30 grayscale">
+                    <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
+                        <x-heroicon-o-bookmark-square class="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p class="text-xs font-black uppercase tracking-[0.2em] text-gray-500">Belum ada tema bulan ini</p>
+                </div>
             @endif
         </div>
     </x-filament::section>

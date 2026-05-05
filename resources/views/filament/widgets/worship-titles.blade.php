@@ -1,7 +1,7 @@
 <x-filament-widgets::widget>
     <x-filament::section>
         <div class="flex items-center justify-between mb-2">
-            <h2 class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Judul Ibadah Sebulan Ini</h2>
+            <h2 class="text-sm font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em]">Judul Ibadah Sebulan Ini</h2>
             <a href="/admin/worship-titles" class="text-[10px] font-bold text-primary-500 uppercase hover:underline">Lihat Semua</a>
         </div>
         @if($titles->count() > 0)
@@ -14,7 +14,12 @@
                 @endforeach
             </div>
         @else
-            <p class="text-gray-400 italic text-sm">Belum ada jadwal ibadah bulan ini</p>
+            <div class="py-12 flex flex-col items-center justify-center text-center opacity-30 grayscale">
+                <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
+                    <x-heroicon-o-queue-list class="w-8 h-8 text-gray-400" />
+                </div>
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-gray-500">Belum ada jadwal ibadah bulan ini</p>
+            </div>
         @endif
     </x-filament::section>
 </x-filament-widgets::widget>

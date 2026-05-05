@@ -1,16 +1,7 @@
 <x-filament-widgets::widget>
-    <div class="fi-section fi-card rounded-[28px] bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 overflow-hidden border-none">
-        {{-- Header Standard --}}
-        <div class="fi-section-header flex items-center gap-3 px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-transparent">
-            <div class="flex p-2 bg-primary-500/10 rounded-lg shrink-0">
-                <x-heroicon-m-user-group class="w-5 h-5 text-primary-500" />
-            </div>
-            <h2 class="fi-section-header-heading text-base font-semibold leading-6 text-gray-950 dark:text-white">
-                Petugas Ibadah Minggu Ini
-            </h2>
-        </div>
-
-        <div class="fi-section-content p-6">
+    <x-filament::section>
+        <div class="flex flex-col py-2">
+            <h2 class="text-sm font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mb-4">Petugas Ibadah Minggu Ini</h2>
             @if($schedule)
                 <div class="space-y-6">
                     {{-- Info Ibadah & PIC --}}
@@ -91,5 +82,5 @@
                 </div>
             @endif
         </div>
-    </div>
+    </x-filament::section>
 </x-filament-widgets::widget>
