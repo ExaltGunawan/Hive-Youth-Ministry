@@ -9,7 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WithdrawalRequest extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, \Spatie\Activitylog\Traits\LogsActivity;
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     protected $fillable = [
         'user_id',

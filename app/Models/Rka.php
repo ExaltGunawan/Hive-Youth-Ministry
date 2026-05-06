@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Rka extends Model
 {
-    use SoftDeletes;
-    use HasFactory;
+    use SoftDeletes, HasFactory, \Spatie\Activitylog\Traits\LogsActivity;
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public $incrementing = false; // Disable auto-increment
     protected $keyType = 'string'; // Use string for ID

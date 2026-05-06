@@ -9,8 +9,10 @@
         "bezhansalleh/filament-exceptions": "^3.0",
         "bezhansalleh/filament-shield": "^3.9",
         "filament/filament": "^3.2",
+        "jacobtims/filament-logger": "*",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "spatie/laravel-activitylog": "*",
         "spatie/laravel-permission": "^6.0"
     },
     "require-dev": {
@@ -67,6 +69,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.4.1"
         }
     },
     "minimum-stability": "stable",
