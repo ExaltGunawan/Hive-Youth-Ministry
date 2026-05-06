@@ -9,6 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class WithdrawalRequestPolicy
 {
     use HandlesAuthorization;
+    use \App\Traits\HasHierarchicalAccess;
 
     /**
      * Determine whether the user can view any models.
@@ -23,7 +24,7 @@ class WithdrawalRequestPolicy
      */
     public function view(User $user, WithdrawalRequest $withdrawalRequest): bool
     {
-        return $user->can('view_withdrawal::request');
+        return $this->hasPermissionWithHierarchy($user, 'view', 'withdrawal::request', $withdrawalRequest);
     }
 
     /**
@@ -39,7 +40,7 @@ class WithdrawalRequestPolicy
      */
     public function update(User $user, WithdrawalRequest $withdrawalRequest): bool
     {
-        return $user->can('update_withdrawal::request');
+        return $this->hasPermissionWithHierarchy($user, 'update', 'withdrawal::request', $withdrawalRequest);
     }
 
     /**
@@ -47,7 +48,7 @@ class WithdrawalRequestPolicy
      */
     public function delete(User $user, WithdrawalRequest $withdrawalRequest): bool
     {
-        return $user->can('delete_withdrawal::request');
+        return $this->hasPermissionWithHierarchy($user, 'delete', 'withdrawal::request', $withdrawalRequest);
     }
 
     /**

@@ -234,9 +234,9 @@ html, body {
 .fi-ta-ctn,
 .fi-wi-widget > .fi-section,
 .fi-wi-widget > div {
-    background: rgba(15, 15, 20, 0.6) !important;
-    backdrop-filter: blur(30px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    background: rgba(15, 15, 20, 0.7) !important;
+    backdrop-filter: blur(10px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(150%) !important;
     border: 1px solid rgba(255, 255, 255, 0.05) !important;
     border-radius: 28px !important;
     box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.6) !important;
@@ -340,9 +340,9 @@ html, body {
 .fi-wi-stats-overview-stat,
 .fi-section.fi-card,
 .fi-ta-ctn {
-    background: rgba(255, 255, 255, 0.02) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(150%) !important;
     border: 1px solid rgba(255, 255, 255, 0.05) !important;
     border-radius: 32px !important;
     box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3) !important;
@@ -450,7 +450,6 @@ html, body {
 
 .fi-ta-row:hover {
     background: rgba(255, 255, 255, 0.06) !important;
-    transform: scale(1.01);
 }
 
 :root:not(.dark) .fi-ta-row:hover {

@@ -11,8 +11,8 @@
 
     <style>
         .fi-section {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px) !important;
+            background: rgba(255, 255, 255, 0.96) !important;
+            backdrop-filter: blur(8px) !important;
             border-radius: 35px !important;
             border: 1px solid rgba(255, 255, 255, 0.4) !important;
             box-shadow: 0 20px 50px rgba(0,0,0,0.05) !important;

@@ -33,8 +33,8 @@ class HiveMasterSeeder extends Seeder
             );
         }
 
-        // Pastikan Role super_admin ada
-        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
+        // Pastikan Role super_admin ada (Gunakan snake_case agar sesuai standar Shield)
+        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
 
         // Seed Data Member untuk Admin
         $adminMember = Member::firstOrCreate(
@@ -59,11 +59,12 @@ class HiveMasterSeeder extends Seeder
                 'email' => 'admin@hive.com',
                 'password' => Hash::make('adminhive321'),
                 'role' => 'super_admin',
-                'divisi_id' => null,
             ]);
         }
 
-        // role super_admin ke user
-        $user->assignRole($superAdminRole);
+        // Berikan role super_admin secara resmi via Spatie
+        if (!$user->hasRole('super_admin')) {
+            $user->assignRole($superAdminRole);
+        }
     }
 }

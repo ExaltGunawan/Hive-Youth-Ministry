@@ -9,6 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class SchedulePolicy
 {
     use HandlesAuthorization;
+    use \App\Traits\HasHierarchicalAccess;
 
     /**
      * Determine whether the user can view any models.
@@ -23,7 +24,7 @@ class SchedulePolicy
      */
     public function view(User $user, Schedule $schedule): bool
     {
-        return $user->can('view_schedule');
+        return $this->hasPermissionWithHierarchy($user, 'view', 'schedule', $schedule);
     }
 
     /**
@@ -39,7 +40,7 @@ class SchedulePolicy
      */
     public function update(User $user, Schedule $schedule): bool
     {
-        return $user->can('update_schedule');
+        return $this->hasPermissionWithHierarchy($user, 'update', 'schedule', $schedule);
     }
 
     /**
@@ -47,7 +48,7 @@ class SchedulePolicy
      */
     public function delete(User $user, Schedule $schedule): bool
     {
-        return $user->can('delete_schedule');
+        return $this->hasPermissionWithHierarchy($user, 'delete', 'schedule', $schedule);
     }
 
     /**

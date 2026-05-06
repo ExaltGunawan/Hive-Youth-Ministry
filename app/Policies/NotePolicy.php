@@ -9,6 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class NotePolicy
 {
     use HandlesAuthorization;
+    use \App\Traits\HasHierarchicalAccess;
 
     /**
      * Determine whether the user can view any models.
@@ -23,7 +24,7 @@ class NotePolicy
      */
     public function view(User $user, Note $note): bool
     {
-        return $user->can('view_note');
+        return $this->hasPermissionWithHierarchy($user, 'view', 'note', $note);
     }
 
     /**
@@ -39,7 +40,7 @@ class NotePolicy
      */
     public function update(User $user, Note $note): bool
     {
-        return $user->can('update_note');
+        return $this->hasPermissionWithHierarchy($user, 'update', 'note', $note);
     }
 
     /**
@@ -47,7 +48,7 @@ class NotePolicy
      */
     public function delete(User $user, Note $note): bool
     {
-        return $user->can('delete_note');
+        return $this->hasPermissionWithHierarchy($user, 'delete', 'note', $note);
     }
 
     /**

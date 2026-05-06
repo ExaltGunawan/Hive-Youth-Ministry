@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class NoteResource extends Resource
 {
@@ -119,19 +120,29 @@ class NoteResource extends Resource
             ]);
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
+        $query = parent::getEloquentQuery();
         $user = auth()->user();
         
-        // Super Admin can see everything
-        if ($user->hasRole('super_admin')) {
-            return parent::getEloquentQuery();
+        // 1. ALL: Jika punya izin 'view_all_note', tampilkan SEMUA
+        if ($user->can('view_all_note')) {
+            return $query;
         }
 
-        // Others only see notes where they are the creator OR their division is allowed
-        return parent::getEloquentQuery()->where(function ($query) use ($user) {
-            $query->where('id_pembuat', $user->id)
-                  ->orWhereJsonContains('allowed_viewers', $user->divisi?->nama_divisi);
+        // 2. LOGIKA GABUNGAN: Divisi, Allowed Viewers, dan Milik Sendiri
+        return $query->where(function ($q) use ($user) {
+            // Selalu tampilkan milik sendiri
+            $q->where('id_pembuat', $user->id)
+              // Selalu tampilkan jika divisinya diizinkan secara manual
+              ->orWhereJsonContains('allowed_viewers', $user->divisi?->nama_divisi);
+            
+            // Jika punya izin 'view_divisi_note', tampilkan semua milik rekan sedivisi
+            if ($user->can('view_divisi_note')) {
+                $q->orWhereHas('pembuat', function ($sub) use ($user) {
+                    $sub->where('divisi_id', $user->divisi_id);
+                });
+            }
         });
     }
 

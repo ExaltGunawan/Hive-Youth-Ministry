@@ -24,4 +24,9 @@ class Note extends Model
         'allowed_viewers' => 'array',
         'attendance' => 'json',
     ];
+
+    public function pembuat()
+    {
+        return $this->belongsTo(User::class, 'id_pembuat');
+    }
 }

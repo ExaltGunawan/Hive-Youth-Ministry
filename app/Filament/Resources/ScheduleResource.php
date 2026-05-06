@@ -93,5 +93,23 @@ class ScheduleResource extends Resource
             'edit' => Pages\EditSchedule::route('/{record}/edit'),
         ];
     }
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        // 1. ALL: Jika punya izin 'view_all_schedule', tampilkan SEMUA
+        if ($user->can('view_all_schedule')) {
+            return $query;
+        }
+
+        // 2. DIVISI: Jika punya izin 'view_divisi_schedule', tampilkan SESAMA DIVISI
+        if ($user->can('view_divisi_schedule')) {
+            return $query->where('divisi_id', $user->divisi_id);
+        }
+
+        // 3. Default: Tampilkan milik divisinya saja jika punya izin dasar
+        return $query->where('divisi_id', $user->divisi_id);
+    }
 }
 

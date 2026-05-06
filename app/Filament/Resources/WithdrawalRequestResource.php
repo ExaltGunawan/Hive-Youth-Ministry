@@ -300,12 +300,22 @@ class WithdrawalRequestResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
+        $user = Auth::user();
 
-        if (!Auth::user()->can('update_withdrawal::request') && !Auth::user()->hasRole('super_admin')) {
-            $query->where('user_id', Auth::id());
+        // 1. ALL: Jika punya izin 'view_all', tampilkan SEMUA
+        if ($user->can('view_all_withdrawal::request')) {
+            return $query;
         }
 
-        return $query;
+        // 2. DIVISI: Jika punya izin 'view_divisi', tampilkan SESAMA DIVISI
+        if ($user->can('view_divisi_withdrawal::request')) {
+            return $query->whereHas('user', function ($q) use ($user) {
+                $q->where('divisi_id', $user->divisi_id);
+            });
+        }
+
+        // 3. OWN: Default hanya tampilkan MILIK SENDIRI
+        return $query->where('user_id', $user->id);
     }
 }
 
