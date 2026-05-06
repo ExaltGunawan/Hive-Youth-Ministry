@@ -50,6 +50,7 @@ class MemberResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_lahir'),
                 Forms\Components\Textarea::make('alamat')
+                    ->autosize()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('kontak')
                     ->maxLength(255),
@@ -62,6 +63,7 @@ class MemberResource extends Resource
                         'menganggur' => 'Menganggur',
                     ]),
                 Forms\Components\Textarea::make('keterangan')
+                    ->autosize()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('status_anggota')
                     ->options([

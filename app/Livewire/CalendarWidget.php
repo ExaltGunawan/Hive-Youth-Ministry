@@ -109,7 +109,7 @@ class CalendarWidget extends Component
             ->get()
             ->groupBy(fn($item) => $item->tanggal->toDateString());
 
-        $divisi = Divisi::all();
+        $divisi = Divisi::whereIn('nama_divisi', ['Outreach', 'Ministry', 'Community'])->get();
 
         return view('livewire.calendar-widget', [
             'calendar' => $calendar,

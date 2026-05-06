@@ -3,7 +3,7 @@
         @php 
             $carbonDate = \Carbon\Carbon::parse($dateString);
             $isSelected = $dateString === $selectedDate;
-            $primaryColor = $dateSchedules->first()->divisi->color ?? '#F59E0B';
+            $primaryColor = $dateSchedules->first()->divisi->color ?? '#0EA5E9';
             $isLast = $loop->last;
         @endphp
         
@@ -50,8 +50,8 @@
                         
                         <div class="shrink-0 flex items-center justify-between sm:justify-end gap-3 mt-2 sm:mt-0">
                             <span class="px-4 py-1.5 rounded-full text-[9px] font-[1000] uppercase tracking-[0.15em] shadow-lg border-2 border-black/10"
-                                  style="background-color: {{ $schedule->divisi->color ?? '#3b82f6' }}; color: #000000; box-shadow: 0 4px 12px -2px {{ $schedule->divisi->color ?? '#3b82f6' }}88;">
-                                {{ $schedule->divisi->nama_divisi }}
+                                  style="background-color: {{ $schedule->divisi->color ?? '#0EA5E9' }}; color: #000000; box-shadow: 0 4px 12px -2px {{ $schedule->divisi->color ?? '#0EA5E9' }}88;">
+                                {{ $schedule->divisi->nama_divisi ?? 'Global' }}
                             </span>
                             <a href="{{ \App\Filament\Resources\ScheduleResource::getUrl('edit', ['record' => $schedule->id]) }}" 
                                class="p-2 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-400 hover:text-orange-500 transition-colors">

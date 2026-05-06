@@ -39,7 +39,10 @@ class ScheduleList extends Component
             ->whereDate('tanggal', '>=', $date->copy()->startOfMonth())
             ->whereDate('tanggal', '<=', $date->copy()->endOfMonth())
             ->when(!empty($this->selectedDivisions), function ($query) {
-                return $query->whereIn('divisi_id', $this->selectedDivisions);
+                return $query->where(function ($q) {
+                    $q->whereIn('divisi_id', $this->selectedDivisions)
+                      ->orWhereNull('divisi_id');
+                });
             })
             ->orderBy('tanggal')
             ->orderBy('jam')

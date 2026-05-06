@@ -41,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->brandLogo(asset('assets/Logo.png'))
-            ->brandLogoHeight('5rem')
+            ->brandLogoHeight('4.5rem')
             ->renderHook(
                 'panels::styles.after',
                 fn (): string => Blade::render('<link rel="stylesheet" href="{{ asset(\'css/custom-filament.css\') }}">'),
@@ -69,9 +69,21 @@ class AdminPanelProvider extends PanelProvider
                                         <h2 class="text-xl md:text-2xl font-medium opacity-70 tracking-tight">{{ $greeting }}</h2>
                                         <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mt-2">{{ auth()->user()->name }}</h1>
                                     </div>
-                                    <div class="text-center md:text-right mt-4 md:mt-0">
+                                    <div class="text-center md:text-right mt-4 md:mt-0" 
+                                         x-data="{ 
+                                            time: \'\',
+                                            updateTime() {
+                                                const now = new Date();
+                                                this.time = now.toLocaleTimeString(\'en-GB\', { 
+                                                    hour: \'2-digit\', 
+                                                    minute: \'2-digit\',
+                                                    timeZone: \'Asia/Jakarta\'
+                                                });
+                                            }
+                                         }" 
+                                         x-init="updateTime(); setInterval(() => updateTime(), 1000)">
                                         <p class="text-sm md:text-lg font-bold opacity-60 tracking-widest uppercase">{{ now()->timezone("Asia/Jakarta")->format("l, d F Y") }}</p>
-                                        <p class="text-3xl md:text-5xl font-black tracking-tighter mt-1">{{ now()->timezone("Asia/Jakarta")->format("H:i") }}</p>
+                                        <p class="text-3xl md:text-5xl font-black tracking-tighter mt-1" x-text="time"></p>
                                     </div>
                                 </div>
 

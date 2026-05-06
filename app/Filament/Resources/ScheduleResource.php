@@ -23,8 +23,8 @@ class ScheduleResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('divisi_id')
-                    ->relationship('divisi', 'nama_divisi')
-                    ->required(),
+                    ->relationship('divisi', 'nama_divisi', fn ($query) => $query->whereIn('nama_divisi', ['Outreach', 'Ministry', 'Community']))
+                    ->placeholder('Semua Divisi (Kosongkan)'),
                 Forms\Components\TextInput::make('schedule_name')
                     ->required()
                     ->maxLength(255),

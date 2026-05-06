@@ -34,8 +34,10 @@ class WorshipTitleResource extends Resource
                 Forms\Components\TextInput::make('scripture')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('background_context')
+                    ->autosize()
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('objective')
+                    ->autosize()
                     ->columnSpanFull(),
             ]);
     }

@@ -29,6 +29,7 @@
                     $isToday = \Carbon\Carbon::parse($item['date'])->isToday();
                     $uniqueDivisions = $dateEvents->unique('divisi_id');
                     $count = $uniqueDivisions->count();
+                    $hasGlobalEvent = $dateEvents->whereNull('divisi_id')->isNotEmpty();
                 @endphp
                 
                 <button wire:click="selectDate('{{ $item['date'] }}')"
@@ -47,9 +48,14 @@
                     <span class="text-[11px] leading-none pt-2.5 pb-1">{{ $item['day'] }}</span>
                     
                     {{-- Indicators - Positioned carefully at the bottom --}}
-                    @if($count > 0)
+                    @if($count > 0 || $hasGlobalEvent)
                         <div class="flex gap-1 justify-center w-full pb-1.5 mt-auto">
-                            @foreach($uniqueDivisions->take(3) as $div)
+                            @if($hasGlobalEvent)
+                                <div class="h-1.5 w-1.5 rounded-full shrink-0 shadow-sm bg-sky-500" 
+                                     style="background-color: {{ $isCurrentSelected ? 'white' : '#0EA5E9' }} !important;">
+                                </div>
+                            @endif
+                            @foreach($uniqueDivisions->whereNotNull('divisi_id')->take($hasGlobalEvent ? 2 : 3) as $div)
                                 <div class="h-1.5 w-1.5 rounded-full shrink-0 shadow-sm" 
                                      style="background-color: {{ $isCurrentSelected ? 'white' : ($div->divisi->color ?? '#F59E0B') }} !important;">
                                 </div>

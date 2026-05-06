@@ -37,6 +37,7 @@ class NoteResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('conclusion')
                     ->label('Kesimpulan / Action Plan')
+                    ->autosize()
                     ->placeholder('Tulis kesimpulan di sini...')
                     ->columnSpanFull(),
                 Forms\Components\Section::make('Daftar Hadir Pengurus')
