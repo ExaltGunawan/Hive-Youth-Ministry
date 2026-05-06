@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('divisi_id')->constrained('divisi');
+            $table->foreignId('divisi_id')->nullable()->constrained('divisi');
             $table->string('schedule_name');
             $table->string('sub_schedule')->nullable();
             $table->string('tempat');
