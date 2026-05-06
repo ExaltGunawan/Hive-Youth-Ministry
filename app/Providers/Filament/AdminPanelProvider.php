@@ -40,8 +40,8 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->brandLogo(asset('assets/Logo.png'))
-            ->brandLogoHeight('4.5rem')
+            ->brandLogo(asset('assets/Logoi.png'))
+            ->brandLogoHeight('20rem')
             ->renderHook(
                 'panels::styles.after',
                 fn (): string => Blade::render('<link rel="stylesheet" href="{{ asset(\'css/custom-filament.css\') }}">'),
