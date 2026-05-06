@@ -23,20 +23,14 @@ class UserPolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
-    public function view(User $user): bool
+    public function view(User $user, User $model): bool
     {
-        return $user->can('view_user');
+        return $user->can('view_user') && $this->canManage($user, $model);
     }
 
     /**
      * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
     public function create(User $user): bool
     {
@@ -45,31 +39,23 @@ class UserPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
-    public function update(User $user): bool
+    public function update(User $user, User $model): bool
     {
-        return $user->can('update_user');
+        return $user->can('update_user') && $this->canManage($user, $model);
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
-    public function delete(User $user): bool
+    public function delete(User $user, User $model): bool
     {
-        return $user->can('delete_user');
+        // Tidak boleh menghapus diri sendiri + Cek Hierarki
+        return $user->can('delete_user') && $user->id !== $model->id && $this->canManage($user, $model);
     }
 
     /**
      * Determine whether the user can bulk delete.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
     public function deleteAny(User $user): bool
     {
@@ -78,20 +64,15 @@ class UserPolicy
 
     /**
      * Determine whether the user can permanently delete.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
-    public function forceDelete(User $user): bool
+    public function forceDelete(User $user, User $model): bool
     {
-        return $user->can('force_delete_user');
+        // Tidak boleh menghapus diri sendiri + Cek Hierarki
+        return $user->can('force_delete_user') && $user->id !== $model->id && $this->canManage($user, $model);
     }
 
     /**
      * Determine whether the user can permanently bulk delete.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
     public function forceDeleteAny(User $user): bool
     {
@@ -100,45 +81,40 @@ class UserPolicy
 
     /**
      * Determine whether the user can restore.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
      */
-    public function restore(User $user): bool
+    public function restore(User $user, User $model): bool
     {
-        return $user->can('restore_user');
+        return $user->can('restore_user') && $this->canManage($user, $model);
     }
 
     /**
-     * Determine whether the user can bulk restore.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Logika Hierarki Role: Mencegah Role rendah mengelola Role tinggi
      */
-    public function restoreAny(User $user): bool
+    private function canManage(User $user, User $target): bool
     {
-        return $user->can('restore_any_user');
-    }
+        // Super Admin bisa mengelola siapa saja
+        if ($user->hasRole('super_admin')) {
+            return true;
+        }
 
-    /**
-     * Determine whether the user can bulk restore.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
-     */
-    public function replicate(User $user): bool
-    {
-        return $user->can('replicate_user');
-    }
+        // Jika target adalah Super Admin, tapi pengelola BUKAN Super Admin -> TOLAK
+        if ($target->hasRole('super_admin')) {
+            return false;
+        }
 
-    /**
-     * Determine whether the user can reorder.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_user');
+        // Definisi bobot hierarki
+        $weights = [
+            'super_admin' => 100,
+            'admin'       => 80,
+            'treasurer'   => 60,
+            'secretary'   => 60,
+            'member'      => 10,
+        ];
+
+        $userWeight   = $weights[strtolower($user->role)] ?? 0;
+        $targetWeight = $weights[strtolower($target->role)] ?? 0;
+
+        // User hanya bisa mengelola role yang setara atau di bawahnya
+        return $userWeight >= $targetWeight;
     }
 }
