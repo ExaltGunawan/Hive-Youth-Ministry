@@ -8,7 +8,7 @@ return [
 	'navigation_sort' => null,
 
     'resources' => [
-        'enabled' => true,
+        'enabled' => false,
         'log_name' => 'Resource',
         'logger' => \Z3d0X\FilamentLogger\Loggers\ResourceLogger::class,
         'color' => 'success',
@@ -40,7 +40,6 @@ return [
         'color' => 'warning',
         'logger' => \Z3d0X\FilamentLogger\Loggers\ModelLogger::class,
         'register' => [
-            \App\Models\User::class,
             \Spatie\Permission\Models\Role::class,
             \Spatie\Permission\Models\Permission::class,
         ],
