@@ -18,7 +18,7 @@ class RkaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationGroup = 'Finance';
-    protected static ?string $navigationLabel = 'Rencana Anggaran (RKA)';
+    protected static ?string $navigationLabel = 'Rencana Anggaran';
 
     public static function form(Form $form): Form
     {

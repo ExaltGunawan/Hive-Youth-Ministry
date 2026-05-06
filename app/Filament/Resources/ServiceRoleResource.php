@@ -16,7 +16,7 @@ class ServiceRoleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?string $navigationGroup = 'Schedules';
-    protected static ?string $navigationLabel = 'Jenis Pelayanan';
+    protected static ?string $navigationLabel = 'Service Roles';
 
     public static function form(Form $form): Form
     {

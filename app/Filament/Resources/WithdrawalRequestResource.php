@@ -21,7 +21,7 @@ class WithdrawalRequestResource extends Resource
     protected static ?string $model = WithdrawalRequest::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
     protected static ?string $navigationGroup = 'Finance';
-    protected static ?string $navigationLabel = 'Jadwal Ambil Uang';
+    protected static ?string $navigationLabel = 'Rencana Ambil Dana';
 
     public static function form(Form $form): Form
     {
@@ -65,7 +65,7 @@ class WithdrawalRequestResource extends Resource
                             ->relationship()
                             ->schema([
                                 Forms\Components\Select::make('rka_id')
-                                    ->label('Pilih RKA')
+                                    ->label('Pilih RKA / Program')
                                     ->options(Rka::all()->pluck('name', 'id')->map(fn ($name) => $name ?? 'Untitled RKA'))
                                     ->live()
                                     ->required()
@@ -300,22 +300,12 @@ class WithdrawalRequestResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        $user = Auth::user();
 
-        // 1. ALL: Jika punya izin 'view_all', tampilkan SEMUA
-        if ($user->can('view_all_withdrawal::request')) {
-            return $query;
+        if (!Auth::user()->can('update_withdrawal::request') && !Auth::user()->hasRole('super_admin')) {
+            $query->where('user_id', Auth::id());
         }
 
-        // 2. DIVISI: Jika punya izin 'view_divisi', tampilkan SESAMA DIVISI
-        if ($user->can('view_divisi_withdrawal::request')) {
-            return $query->whereHas('user', function ($q) use ($user) {
-                $q->where('divisi_id', $user->divisi_id);
-            });
-        }
-
-        // 3. OWN: Default hanya tampilkan MILIK SENDIRI
-        return $query->where('user_id', $user->id);
+        return $query;
     }
 }
 

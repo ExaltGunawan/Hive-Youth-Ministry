@@ -16,7 +16,7 @@ class ScheduleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
     protected static ?string $navigationGroup = 'Schedules';
-    protected static ?string $navigationLabel = 'Kegiatan Youth';
+    protected static ?string $navigationLabel = 'Jadwal Kegiatan';
 
     public static function form(Form $form): Form
     {
@@ -24,7 +24,7 @@ class ScheduleResource extends Resource
             ->schema([
                 Forms\Components\Select::make('divisi_id')
                     ->relationship('divisi', 'nama_divisi', fn ($query) => $query->whereIn('nama_divisi', ['Outreach', 'Ministry', 'Community']))
-                    ->placeholder('Semua Divisi (Kosongkan)'),
+                    ->placeholder('Semua Divisi'),
                 Forms\Components\TextInput::make('schedule_name')
                     ->required()
                     ->maxLength(255),
@@ -92,24 +92,6 @@ class ScheduleResource extends Resource
             'view' => Pages\ViewSchedule::route('/{record}'),
             'edit' => Pages\EditSchedule::route('/{record}/edit'),
         ];
-    }
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
-    {
-        $query = parent::getEloquentQuery();
-        $user = auth()->user();
-
-        // 1. ALL: Jika punya izin 'view_all_schedule', tampilkan SEMUA
-        if ($user->can('view_all_schedule')) {
-            return $query;
-        }
-
-        // 2. DIVISI: Jika punya izin 'view_divisi_schedule', tampilkan SESAMA DIVISI
-        if ($user->can('view_divisi_schedule')) {
-            return $query->where('divisi_id', $user->divisi_id);
-        }
-
-        // 3. Default: Tampilkan milik divisinya saja jika punya izin dasar
-        return $query->where('divisi_id', $user->divisi_id);
     }
 }
 

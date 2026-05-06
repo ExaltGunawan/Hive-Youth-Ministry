@@ -28,7 +28,7 @@ class UserResource extends Resource
                     ->relationship('member', 'nama_lengkap')
                     ->searchable()
                     ->preload()
-                    ->label('Pilih Jemaat'),
+                    ->label('Nama Jemaat'),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -41,7 +41,7 @@ class UserResource extends Resource
                 Forms\Components\Select::make('role')
                     ->options(\Spatie\Permission\Models\Role::all()->pluck('name', 'name'))
                     ->required()
-                    ->label('Role Akses Sistem')
+                    ->label('Role')
                     ->live()
                     ->afterStateUpdated(function ($state, Forms\Set $set) {
                         $stateLower = strtolower($state ?? '');
@@ -58,8 +58,8 @@ class UserResource extends Resource
                     }),
                 Forms\Components\Select::make('divisi_id')
                     ->relationship('divisi', 'nama_divisi')
-                    ->label('Divisi')
-                    ->placeholder('Pilih divisi (otomatis jika role member-...)'),
+                    ->label('Divisi/Jabatan')
+                    ->placeholder('Pilih divisi'),
             ]);
     }
 
@@ -75,6 +75,7 @@ class UserResource extends Resource
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'super_admin' => 'danger',
+                        'Super Admin' => 'danger',
                         'admin' => 'warning',
                         'treasurer' => 'success',
                         'secretary' => 'info',
@@ -97,9 +98,11 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->hidden(fn ($record) => $record->trashed()),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(fn (User $record) => $record->id === auth()->id()),
                 Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make()
+                    ->hidden(fn (User $record) => $record->id === auth()->id()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

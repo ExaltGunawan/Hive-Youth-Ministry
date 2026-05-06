@@ -17,7 +17,7 @@ class NoteResource extends Resource
     protected static ?string $recordTitleAttribute = 'title';
 
     protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
-    protected static ?string $navigationGroup = 'Secretary';
+    protected static ?string $navigationGroup = 'Notes';
     protected static ?string $navigationLabel = 'Notulensi';
 
     public static function form(Form $form): Form

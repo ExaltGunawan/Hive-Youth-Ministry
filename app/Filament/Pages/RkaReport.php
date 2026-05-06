@@ -56,12 +56,12 @@ class RkaReport extends Page implements HasForms
                                     ->preload()
                                     ->columnSpan(1),
                                 DatePicker::make('start_date')
-                                    ->label('Tanggal Mulai')
-                                    ->placeholder('Pilih tanggal mulai')
+                                    ->label('Tanggal Awal')
+                                    ->placeholder('Pilih tanggal Awal')
                                     ->columnSpan(1),
                                 DatePicker::make('end_date')
-                                    ->label('Tanggal Selesai')
-                                    ->placeholder('Pilih tanggal selesai')
+                                    ->label('Tanggal Akhir')
+                                    ->placeholder('Pilih tanggal Akhir')
                                     ->columnSpan(1),
                             ])
                     ])
