@@ -46,13 +46,13 @@ class UserResource extends Resource
                     ->afterStateUpdated(function ($state, Forms\Set $set) {
                         $stateLower = strtolower($state ?? '');
                         if (str_contains($stateLower, 'outreach')) {
-                            $divisi = \App\Models\Divisi::where('nama_divisi', 'ilike', '%outreach%')->first();
+                            $divisi = \App\Models\Divisi::whereRaw('LOWER(nama_divisi) LIKE ?', ['%outreach%'])->first();
                             if ($divisi) $set('divisi_id', $divisi->id);
                         } elseif (str_contains($stateLower, 'ministry')) {
-                            $divisi = \App\Models\Divisi::where('nama_divisi', 'ilike', '%ministry%')->first();
+                            $divisi = \App\Models\Divisi::whereRaw('LOWER(nama_divisi) LIKE ?', ['%ministry%'])->first();
                             if ($divisi) $set('divisi_id', $divisi->id);
                         } elseif (str_contains($stateLower, 'community')) {
-                            $divisi = \App\Models\Divisi::where('nama_divisi', 'ilike', '%community%')->first();
+                            $divisi = \App\Models\Divisi::whereRaw('LOWER(nama_divisi) LIKE ?', ['%community%'])->first();
                             if ($divisi) $set('divisi_id', $divisi->id);
                         }
                     }),
