@@ -17,8 +17,8 @@ class GuestController extends Controller
             // We fetch the users belonging to these divisions to display the actual leaders.
             $pengurus = User::with(['member', 'divisi'])
                 ->whereHas('divisi', function ($query) {
-                    $query->where('nama_divisi', 'ilike', '%Ketua%')
-                          ->orWhere('nama_divisi', 'ilike', '%Wakil%');
+                    $query->whereRaw('LOWER(nama_divisi) LIKE ?', ['%ketua%'])
+                          ->orWhereRaw('LOWER(nama_divisi) LIKE ?', ['%wakil%']);
                 })
                 ->get()
                 ->map(function ($user) {

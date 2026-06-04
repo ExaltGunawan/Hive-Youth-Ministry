@@ -967,6 +967,29 @@
             </div>
         </section>
 
+        <!-- Upcoming Event Section -->
+        <section class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+            <div class="section-header">
+                <span class="section-tag">UPCOMING EVENT</span>
+                <h2 class="section-title">Worship Night</h2>
+                <p class="section-desc">Jangan lewatkan momen pujian penyembahan bersama dalam Worship Night kami yang akan datang.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: all 0.4s ease;">
+                <img src="{{ asset('assets/1.jpeg') }}" alt="Worship Night Thumbnail" style="width: 100%; height: auto; display: block; border-bottom: 1px solid rgba(255, 255, 255, 0.05); aspect-ratio: 16/9; object-fit: cover;">
+                <div style="padding: 2.5rem; text-align: center;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-light);">Worship Night: Beehive</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Bergabunglah bersama kami untuk sebuah malam yang penuh dengan hadirat Tuhan. Daftarkan diri Anda sekarang melalui tautan di bawah ini.</p>
+                    <a href="https://goers.co/worshipnightbeehive" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem 2rem; border-radius: 50px; font-size: 1rem; font-family: var(--font-display); font-weight: 800; text-decoration: none; background: linear-gradient(135deg, rgba(var(--accent-gold-rgb), 0.8) 0%, var(--accent-gold) 100%); color: #000; box-shadow: 0 10px 25px rgba(var(--accent-gold-rgb), 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(245, 158, 11, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(245, 158, 11, 0.3)';">
+                        <span>Daftar Sekarang</span>
+                        <svg viewBox="0 0 20 20" style="width: 20px; height: 20px; fill: #000; margin-top: 1px;">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <!-- Media & Komunitas Section -->
         <section class="instagram-section container">
             <div class="section-header">
@@ -1073,6 +1096,30 @@
         </section>
 
         <!-- Board Directory / Kontak Pengurus Section -->
+        @php
+            // Extract dynamic pengurus from DB (filter by Ketua/Wakil keywords and ignore default admin unless empty)
+            $displayList = collect();
+            
+            if (isset($pengurus) && $pengurus->isNotEmpty()) {
+                foreach ($pengurus as $p) {
+                    // Check if the role/jabatan is Ketua or Wakil
+                    $isKetuaOrWakil = false;
+                    $jabatanLower = strtolower($p['jabatan']);
+                    if (str_contains($jabatanLower, 'ketua') || str_contains($jabatanLower, 'wakil') || str_contains($jabatanLower, 'chair') || str_contains($jabatanLower, 'president')) {
+                        $isKetuaOrWakil = true;
+                    }
+                    
+                    if ($isKetuaOrWakil && ($p['nama'] !== 'Admin Hive' || $pengurus->count() === 1)) {
+                        $displayList->push($p);
+                    }
+                }
+            }
+            
+            // Take only the first 2 items to prevent showing more than Ketua & Wakil
+            $displayList = $displayList->take(2);
+        @endphp
+
+        @if($displayList->isNotEmpty())
         <section class="container">
             <div class="section-header">
                 <span class="section-tag">BOARD & DIRECTORY</span>
@@ -1081,58 +1128,6 @@
             </div>
             
             <div class="pengurus-grid">
-                <!-- If database has board members, render them, but also ensure standard profiles are shown as fallback/enhancement -->
-                @php
-                    // Fallback list of default beautiful board profiles (Only Ketua & Wakil)
-                    $fallbackPengurus = [
-                        [
-                            'nama' => 'Yohanes Gunawan',
-                            'jabatan' => 'Ketua Pemuda',
-                            'instagram' => 'yohanes_gun',
-                            'kontak' => '+62 812-3456-7890',
-                            'divisi' => 'Core Team'
-                        ],
-                        [
-                            'nama' => 'Stefanny Putri',
-                            'jabatan' => 'Wakil Ketua Pemuda',
-                            'instagram' => 'stefanny_p',
-                            'kontak' => '+62 821-4321-8765',
-                            'divisi' => 'Core Team'
-                        ]
-                    ];
-
-                    // Merge dynamic pengurus from DB (filter by Ketua/Wakil keywords and ignore default admin unless empty)
-                    $displayList = collect();
-                    
-                    if (isset($pengurus) && $pengurus->isNotEmpty()) {
-                        foreach ($pengurus as $p) {
-                            // Check if the role/jabatan is Ketua or Wakil
-                            $isKetuaOrWakil = false;
-                            $jabatanLower = strtolower($p['jabatan']);
-                            if (str_contains($jabatanLower, 'ketua') || str_contains($jabatanLower, 'wakil') || str_contains($jabatanLower, 'chair') || str_contains($jabatanLower, 'president')) {
-                                $isKetuaOrWakil = true;
-                            }
-                            
-                            if ($isKetuaOrWakil && ($p['nama'] !== 'Admin Hive' || $pengurus->count() === 1)) {
-                                $displayList->push($p);
-                            }
-                        }
-                    }
-
-                    // Fill remaining slots up to 2 with fallbacks to guarantee a stunning layout with exactly Ketua & Wakil
-                    if ($displayList->count() < 2) {
-                        $needed = 2 - $displayList->count();
-                        for ($i = 0; $i < $needed; $i++) {
-                            if (isset($fallbackPengurus[$i])) {
-                                $displayList->push($fallbackPengurus[$i]);
-                            }
-                        }
-                    }
-                    
-                    // Take only the first 2 items to prevent showing more than Ketua & Wakil
-                    $displayList = $displayList->take(2);
-                @endphp
-
                 @foreach($displayList as $p)
                     <div class="pengurus-card">
                         <div class="avatar-container">
@@ -1173,6 +1168,7 @@
                 @endforeach
             </div>
         </section>
+        @endif
 
     </main>
 
