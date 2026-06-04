@@ -1073,6 +1073,30 @@
         </section>
 
         <!-- Board Directory / Kontak Pengurus Section -->
+        @php
+            // Extract dynamic pengurus from DB (filter by Ketua/Wakil keywords and ignore default admin unless empty)
+            $displayList = collect();
+            
+            if (isset($pengurus) && $pengurus->isNotEmpty()) {
+                foreach ($pengurus as $p) {
+                    // Check if the role/jabatan is Ketua or Wakil
+                    $isKetuaOrWakil = false;
+                    $jabatanLower = strtolower($p['jabatan']);
+                    if (str_contains($jabatanLower, 'ketua') || str_contains($jabatanLower, 'wakil') || str_contains($jabatanLower, 'chair') || str_contains($jabatanLower, 'president')) {
+                        $isKetuaOrWakil = true;
+                    }
+                    
+                    if ($isKetuaOrWakil && ($p['nama'] !== 'Admin Hive' || $pengurus->count() === 1)) {
+                        $displayList->push($p);
+                    }
+                }
+            }
+            
+            // Take only the first 2 items to prevent showing more than Ketua & Wakil
+            $displayList = $displayList->take(2);
+        @endphp
+
+        @if($displayList->isNotEmpty())
         <section class="container">
             <div class="section-header">
                 <span class="section-tag">BOARD & DIRECTORY</span>
@@ -1081,57 +1105,6 @@
             </div>
             
             <div class="pengurus-grid">
-                <!-- If database has board members, render them, but also ensure standard profiles are shown as fallback/enhancement -->
-                @php
-                    // Fallback list of default beautiful board profiles (Only Ketua & Wakil)
-                    $fallbackPengurus = [
-                        [
-                            'nama' => 'Yohanes Gunawan',
-                            'jabatan' => 'Ketua Pemuda',
-                            'instagram' => 'yohanes_gun',
-                            'kontak' => '+62 812-3456-7890',
-                            'divisi' => 'Core Team'
-                        ],
-                        [
-                            'nama' => 'Stefanny Putri',
-                            'jabatan' => 'Wakil Ketua Pemuda',
-                            'instagram' => 'stefanny_p',
-                            'kontak' => '+62 821-4321-8765',
-                            'divisi' => 'Core Team'
-                        ]
-                    ];
-
-                    // Merge dynamic pengurus from DB (filter by Ketua/Wakil keywords and ignore default admin unless empty)
-                    $displayList = collect();
-                    
-                    if (isset($pengurus) && $pengurus->isNotEmpty()) {
-                        foreach ($pengurus as $p) {
-                            // Check if the role/jabatan is Ketua or Wakil
-                            $isKetuaOrWakil = false;
-                            $jabatanLower = strtolower($p['jabatan']);
-                            if (str_contains($jabatanLower, 'ketua') || str_contains($jabatanLower, 'wakil') || str_contains($jabatanLower, 'chair') || str_contains($jabatanLower, 'president')) {
-                                $isKetuaOrWakil = true;
-                            }
-                            
-                            if ($isKetuaOrWakil && ($p['nama'] !== 'Admin Hive' || $pengurus->count() === 1)) {
-                                $displayList->push($p);
-                            }
-                        }
-                    }
-
-                    // Fill remaining slots up to 2 with fallbacks to guarantee a stunning layout with exactly Ketua & Wakil
-                    if ($displayList->count() < 2) {
-                        $needed = 2 - $displayList->count();
-                        for ($i = 0; $i < $needed; $i++) {
-                            if (isset($fallbackPengurus[$i])) {
-                                $displayList->push($fallbackPengurus[$i]);
-                            }
-                        }
-                    }
-                    
-                    // Take only the first 2 items to prevent showing more than Ketua & Wakil
-                    $displayList = $displayList->take(2);
-                @endphp
 
                 @foreach($displayList as $p)
                     <div class="pengurus-card">
@@ -1173,6 +1146,7 @@
                 @endforeach
             </div>
         </section>
+        @endif
 
     </main>
 

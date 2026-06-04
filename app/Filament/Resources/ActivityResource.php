@@ -8,10 +8,19 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Filament\Resources\ActivityResource\Pages;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
-class ActivityResource extends BaseActivityResource
+class ActivityResource extends BaseActivityResource implements HasShieldPermissions
 {
     protected static ?string $navigationGroup = 'Pengaturan';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+        ];
+    }
 
     public static function table(Table $table): Table
     {

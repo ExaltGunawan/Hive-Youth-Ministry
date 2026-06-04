@@ -89,6 +89,7 @@ class AdminPanelProvider extends PanelProvider
 
                                 {{-- Integrated Quick Actions --}}
                                 <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-4">
+                                    @can("create_schedule")
                                     <a href="/admin/schedules/create" class="header-shortcut-card">
                                         <div class="shortcut-icon-bg bg-emerald-500/20 text-emerald-400">
                                             <x-heroicon-m-calendar-days class="w-5 h-5"/>
@@ -98,6 +99,8 @@ class AdminPanelProvider extends PanelProvider
                                             <span class="shortcut-desc">Add New</span>
                                         </div>
                                     </a>
+                                    @endcan
+                                    @can("create_note")
                                     <a href="/admin/notes/create" class="header-shortcut-card">
                                         <div class="shortcut-icon-bg bg-blue-500/20 text-blue-400">
                                             <x-heroicon-m-document-text class="w-5 h-5"/>
@@ -107,6 +110,8 @@ class AdminPanelProvider extends PanelProvider
                                             <span class="shortcut-desc">Create Note</span>
                                         </div>
                                     </a>
+                                    @endcan
+                                    @can("create_worship_title")
                                     <a href="/admin/worship-titles/create" class="header-shortcut-card">
                                         <div class="shortcut-icon-bg bg-amber-500/20 text-amber-400">
                                             <x-heroicon-m-book-open class="w-5 h-5"/>
@@ -116,6 +121,8 @@ class AdminPanelProvider extends PanelProvider
                                             <span class="shortcut-desc">Set Title</span>
                                         </div>
                                     </a>
+                                    @endcan
+                                    @can("create_worship_theme")
                                     <a href="/admin/worship-themes/create" class="header-shortcut-card">
                                         <div class="shortcut-icon-bg bg-rose-500/20 text-rose-400">
                                             <x-heroicon-m-swatch class="w-5 h-5"/>
@@ -125,6 +132,8 @@ class AdminPanelProvider extends PanelProvider
                                             <span class="shortcut-desc">Monthly</span>
                                         </div>
                                     </a>
+                                    @endcan
+                                    @can("create_service_schedule")
                                     <a href="/admin/service-schedules/create" class="header-shortcut-card">
                                         <div class="shortcut-icon-bg bg-purple-500/20 text-purple-400">
                                             <x-heroicon-m-user-group class="w-5 h-5"/>
@@ -134,6 +143,8 @@ class AdminPanelProvider extends PanelProvider
                                             <span class="shortcut-desc">Assignment</span>
                                         </div>
                                     </a>
+                                    @endcan
+                                    @can("create_withdrawal_request")
                                     <a href="/admin/withdrawal-requests/create" class="header-shortcut-card">
                                         <div class="shortcut-icon-bg bg-cyan-500/20 text-cyan-400">
                                             <x-heroicon-m-banknotes class="w-5 h-5"/>
@@ -143,6 +154,7 @@ class AdminPanelProvider extends PanelProvider
                                             <span class="shortcut-desc">Ambil Uang</span>
                                         </div>
                                     </a>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
