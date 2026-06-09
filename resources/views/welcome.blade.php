@@ -78,13 +78,24 @@
         }
 
         /* Parallax Background and Honeycomb Overlay */
+        @php
+            $heroBg = asset('assets/BG.png');
+            if (isset($sections) && is_array($sections)) {
+                foreach ($sections as $section) {
+                    if ($section['type'] === 'hero' && !empty($section['data']['background_image'])) {
+                        $heroBg = asset('storage/' . $section['data']['background_image']);
+                        break;
+                    }
+                }
+            }
+        @endphp
         .hero-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('{{ asset("assets/BG.png") }}');
+            background-image: url('{{ $heroBg }}');
             background-size: cover;
             background-position: center;
             opacity: 0.12;
@@ -909,265 +920,208 @@
     <!-- Main Content -->
     <main>
         
-        <!-- Hero Section featuring weekly service schedule -->
-        <section class="hero container">
-            <div class="hero-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: var(--accent-gold);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <span>SELAMAT DATANG DI HIVE YOUTH MINISTRY</span>
-            </div>
-            <h1 class="hero-title">Connecting Youths, Growing in Faith</h1>
-            <p class="hero-subtitle">Membangun komunitas anak muda yang solid, bersukacita, dan bertumbuh bersama di dalam iman Kristen. Mari bergabung bersama kami di persekutuan mingguan!</p>
-            
-            <!-- Service Schedule Card -->
-            <div class="schedule-card">
-                <div class="schedule-left">
-                    <span class="schedule-tag">JADWAL PERSEKUTUAN</span>
-                    <h2 class="schedule-heading">Ibadah Pemuda Mingguan</h2>
-                    <p class="schedule-description">Persekutuan pemuda dirancang khusus untuk membawa pesan yang relevan, pujian penyembahan yang bersemangat, serta ruang untuk saling bertumbuh dan berbagi dalam kelompok kecil.</p>
-                </div>
-                <div class="schedule-right">
-                    <!-- Day Indicator -->
-                    <div class="info-row">
-                        <div class="info-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
+        @if(isset($sections) && is_array($sections))
+            @foreach($sections as $section)
+                @if($section['type'] === 'hero')
+                    <!-- Hero Section -->
+                    <section class="hero container">
+                        <div class="hero-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: var(--accent-gold);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <span>SELAMAT DATANG DI HIVE YOUTH MINISTRY</span>
                         </div>
-                        <div class="info-content">
-                            <span class="info-label">Hari</span>
-                            <span class="info-value">Setiap Hari Minggu</span>
-                        </div>
-                    </div>
-                    <!-- Time Indicator -->
-                    <div class="info-row">
-                        <div class="info-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div class="info-content">
-                            <span class="info-label">Waktu</span>
-                            <span class="info-value">Pukul 07:00 WIB</span>
-                        </div>
-                    </div>
-                    <!-- Location Indicator -->
-                    <div class="info-row">
-                        <div class="info-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                        </div>
-                        <div class="info-content">
-                            <span class="info-label">Tempat</span>
-                            <span class="info-value">GKI Cimahi, Ruang Kebaktian 2</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                        <h1 class="hero-title">{!! isset($section['data']['title']) ? $section['data']['title'] : 'Connecting Youths, Growing in Faith' !!}</h1>
+                        <p class="hero-subtitle">{!! isset($section['data']['subtitle']) ? nl2br(e($section['data']['subtitle'])) : 'Membangun komunitas anak muda yang solid, bersukacita, dan bertumbuh bersama di dalam iman Kristen.' !!}</p>
+                    </section>
+                @endif
 
-        <!-- Upcoming Event Section -->
-        <section class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
-            <div class="section-header">
-                <span class="section-tag">UPCOMING EVENT</span>
-                <h2 class="section-title">Worship Night</h2>
-                <p class="section-desc">Jangan lewatkan momen pujian penyembahan bersama dalam Worship Night kami yang akan datang.</p>
-            </div>
-
-            <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: all 0.4s ease;">
-                <img src="{{ asset('assets/1.jpeg') }}" alt="Worship Night Thumbnail" style="width: 100%; height: auto; display: block; border-bottom: 1px solid rgba(255, 255, 255, 0.05); aspect-ratio: 16/9; object-fit: cover;">
-                <div style="padding: 2.5rem; text-align: center;">
-                    <h3 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-light);">Worship Night: Beehive</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Bergabunglah bersama kami untuk sebuah malam yang penuh dengan hadirat Tuhan. Daftarkan diri Anda sekarang melalui tautan di bawah ini.</p>
-                    <a href="https://goers.co/worshipnightbeehive" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem 2rem; border-radius: 50px; font-size: 1rem; font-family: var(--font-display); font-weight: 800; text-decoration: none; background: linear-gradient(135deg, rgba(var(--accent-gold-rgb), 0.8) 0%, var(--accent-gold) 100%); color: #000; box-shadow: 0 10px 25px rgba(var(--accent-gold-rgb), 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(245, 158, 11, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(245, 158, 11, 0.3)';">
-                        <span>Daftar Sekarang</span>
-                        <svg viewBox="0 0 20 20" style="width: 20px; height: 20px; fill: #000; margin-top: 1px;">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Media & Komunitas Section -->
-        <section class="instagram-section container">
-            <div class="section-header">
-                <span class="section-tag">Media & Komunitas</span>
-                <h2 class="section-title">Koneksi Sosial Media Hub</h2>
-                <p class="section-desc">Ikuti kabar terbaru, keseruan persekutuan, dokumentasi ibadah, dan renungan menarik melalui kanal sosial media resmi kami.</p>
-            </div>
-            
-            <!-- Media Grid -->
-            <div class="instagram-grid">
-                <!-- Card 1: Instagram Post 1 (Foto Bersama) -->
-                <a href="https://www.instagram.com/p/BjWewf8BTk7/?igsh=MXFnMjVjajM5bWtidA==" target="_blank" class="ig-card ig-bg-1">
-                    <div class="ig-icon-floating">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </div>
-                    <div class="ig-overlay"></div>
-                    <div class="ig-content">
-                        <span class="ig-tag">Foto Bersama</span>
-                        <p class="ig-caption">Kebersamaan & sukacita persekutuan remaja pemuda GKI Cimahi dalam satu iman yang hangat.</p>
-                        <div class="ig-meta">
-                            <span>@kp_gkicimahi</span>
-                            <div class="ig-stats">
-                                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                                <span>Lihat Post</span>
+                @if($section['type'] === 'schedule')
+                    <!-- Service Schedule Card -->
+                    <section class="container" style="padding-top: 0;">
+                        <div class="schedule-card">
+                            <div class="schedule-left">
+                                <span class="schedule-tag">{{ $section['data']['tag'] ?? 'JADWAL PERSEKUTUAN' }}</span>
+                                <h2 class="schedule-heading">{{ $section['data']['heading'] ?? 'Ibadah Pemuda Mingguan' }}</h2>
+                                <p class="schedule-description">{!! isset($section['data']['description']) ? nl2br(e($section['data']['description'])) : '' !!}</p>
                             </div>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Card 2: YouTube Video (Video Teaser Worship Night) -->
-                <a href="https://youtube.com/shorts/5ly-VesN-xg?si=MBT6vnejYsVA9Iv3" target="_blank" class="ig-card ig-bg-2">
-                    <!-- Glowing Play Button Overlay -->
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; background: rgba(229, 45, 39, 0.9); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(229, 45, 39, 0.6); transition: all 0.3s ease;" class="play-btn-circle">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                    <div class="ig-overlay"></div>
-                    <div class="ig-content">
-                        <span class="ig-tag" style="background: rgba(229, 45, 39, 0.2); border-color: #e52d27; color: #e52d27;">Teaser Worship Night</span>
-                        <p class="ig-caption">Saksikan teaser Online Worship Night: Pujian penyembahan yang mempersatukan hati kita di hadirat-Nya.</p>
-                        <div class="ig-meta">
-                            <span>@GKICimahi</span>
-                            <div class="ig-stats">
-                                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                                <span>Tonton Video</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Card 3: Instagram Reel (Recap Camp Youth) -->
-                <a href="https://www.instagram.com/reel/DKw1IQkRFAV/?igsh=OG9lNmV5cGZrMGhn" target="_blank" class="ig-card ig-bg-3">
-                    <div class="ig-icon-floating">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </div>
-                    <div class="ig-overlay"></div>
-                    <div class="ig-content">
-                        <span class="ig-tag">Recap Camp Youth</span>
-                        <p class="ig-caption">Momen-momen sukacita, tawa, ibadah, dan perjumpaan pribadi dengan Tuhan yang memulihkan hidup selama Camp Youth.</p>
-                        <div class="ig-meta">
-                            <span>@koreci_gki</span>
-                            <div class="ig-stats">
-                                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 1 15.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                                <span>Tonton Reel</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Card 4: Instagram Post 2 (Acara Community) -->
-                <a href="https://www.instagram.com/p/DNF-g-ZPVGm/?igsh=cHVuMXBicnduMzZt" target="_blank" class="ig-card ig-bg-4">
-                    <div class="ig-icon-floating">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </div>
-                    <div class="ig-overlay"></div>
-                    <div class="ig-content">
-                        <span class="ig-tag">Acara Community</span>
-                        <p class="ig-caption">Keseruan kegiatan kebersamaan, games, dan aktivitas seru komunitas pemuda dalam merajut tali persaudaraan.</p>
-                        <div class="ig-meta">
-                            <span>@kp_gkicimahi</span>
-                            <div class="ig-stats">
-                                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 1 15.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                                <span>Lihat Post</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            
-            <!-- Connection Buttons -->
-            <div class="social-btn-container font-semibold">
-                <a href="https://instagram.com/kp_gkicimahi" target="_blank" class="social-btn social-btn-ig-1">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    <span>@kp_gkicimahi</span>
-                </a>
-                <a href="https://instagram.com/koreci_gki" target="_blank" class="social-btn social-btn-ig-2">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    <span>@koreci_gki</span>
-                </a>
-                <a href="https://youtube.com/@GKICimahi" target="_blank" class="social-btn social-btn-yt">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.163c-.272-1.022-1.074-1.826-2.099-2.099C19.548 3.5 12 3.5 12 3.5s-7.548 0-9.399.564c-1.025.273-1.827 1.077-2.1 2.1C0 8.015 0 12 0 12s0 3.985.501 5.837c.273 1.022 1.075 1.826 2.1 2.1C4.452 20.5 12 20.5 12 20.5s7.548 0 9.399-.563c1.025-.274 1.827-1.078 2.1-2.1.501-1.852.501-5.837.501-5.837s0-3.985-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    <span>GKICimahi</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Board Directory / Kontak Pengurus Section -->
-        @php
-            // Extract dynamic pengurus from DB (filter by Ketua/Wakil keywords and ignore default admin unless empty)
-            $displayList = collect();
-            
-            if (isset($pengurus) && $pengurus->isNotEmpty()) {
-                foreach ($pengurus as $p) {
-                    // Check if the role/jabatan is Ketua or Wakil
-                    $isKetuaOrWakil = false;
-                    $jabatanLower = strtolower($p['jabatan']);
-                    if (str_contains($jabatanLower, 'ketua') || str_contains($jabatanLower, 'wakil') || str_contains($jabatanLower, 'chair') || str_contains($jabatanLower, 'president')) {
-                        $isKetuaOrWakil = true;
-                    }
-                    
-                    if ($isKetuaOrWakil && ($p['nama'] !== 'Admin Hive' || $pengurus->count() === 1)) {
-                        $displayList->push($p);
-                    }
-                }
-            }
-            
-            // Take only the first 2 items to prevent showing more than Ketua & Wakil
-            $displayList = $displayList->take(2);
-        @endphp
-
-        @if($displayList->isNotEmpty())
-        <section class="container">
-            <div class="section-header">
-                <span class="section-tag">BOARD & DIRECTORY</span>
-                <h2 class="section-title">Kontak Pengurus</h2>
-                <p class="section-desc">Punya pertanyaan seputar pelayanan pemuda atau butuh teman berbagi? Silakan hubungi jajaran pengurus kami secara langsung.</p>
-            </div>
-            
-            <div class="pengurus-grid">
-                @foreach($displayList as $p)
-                    <div class="pengurus-card">
-                        <div class="avatar-container">
-                            @if(isset($p['photo']) && $p['photo'])
-                                <img src="{{ $p['photo'] }}" alt="{{ $p['nama'] }}" class="avatar-img">
-                            @else
-                                <div class="avatar-fallback">
-                                    {{ strtoupper(substr($p['nama'], 0, 1)) }}{{ count(explode(' ', $p['nama'])) > 1 ? strtoupper(substr(explode(' ', $p['nama'])[1], 0, 1)) : '' }}
+                            <div class="schedule-right">
+                                <!-- Day Indicator -->
+                                <div class="info-row">
+                                    <div class="info-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="info-content">
+                                        <span class="info-label">Hari</span>
+                                        <span class="info-value">{{ $section['data']['day'] ?? '-' }}</span>
+                                    </div>
                                 </div>
-                            @endif
+                                <!-- Time Indicator -->
+                                <div class="info-row">
+                                    <div class="info-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="info-content">
+                                        <span class="info-label">Waktu</span>
+                                        <span class="info-value">{{ $section['data']['time'] ?? '-' }}</span>
+                                    </div>
+                                </div>
+                                <!-- Location Indicator -->
+                                <div class="info-row">
+                                    <div class="info-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="info-content">
+                                        <span class="info-label">Tempat</span>
+                                        <span class="info-value">{{ $section['data']['location'] ?? '-' }}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <h3 class="pengurus-name">{{ $p['nama'] }}</h3>
-                        <span class="pengurus-role">{{ $p['jabatan'] }}</span>
-                        
-                        <div class="pengurus-meta">
-                            <div class="pengurus-meta-item">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206"></path>
-                                </svg>
-                                <span>&commat;{{ ltrim($p['instagram'], '@') }}</span>
-                            </div>
-                            <div class="pengurus-meta-item">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                </svg>
-                                <span>{{ $p['kontak'] }}</span>
-                            </div>
+                    </section>
+                @endif
+
+                @if($section['type'] === 'event')
+                    <!-- Upcoming Event Section -->
+                    <section class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+                        <div class="section-header">
+                            <span class="section-tag">{{ $section['data']['tag'] ?? 'UPCOMING EVENT' }}</span>
+                            <h2 class="section-title">{{ $section['data']['heading'] ?? 'Worship Night' }}</h2>
+                            <p class="section-desc">{!! isset($section['data']['description']) ? nl2br(e($section['data']['description'])) : '' !!}</p>
                         </div>
 
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $p['kontak']) }}" target="_blank" class="pengurus-contact-btn">
-                            <svg fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 1.887.521 3.652 1.428 5.166l-1.01 3.693c-.092.336.216.63.533.518l3.666-1.3a9.92 9.92 0 004.823 1.246c5.522 0 10-4.484 10-10.017C22 6.484 17.522 2 12 2zm4.184 14.073c-.237.669-1.38 1.282-1.92 1.348-.485.06-1.127.08-3.242-.796-2.705-1.12-4.437-3.873-4.572-4.053-.135-.18-1.1-1.464-1.1-2.793 0-1.33.697-1.983.945-2.247.247-.263.541-.33.72-.33h.518c.158 0 .373-.06.586.452.225.541.765 1.866.832 2.001.068.136.113.294.023.475-.09.18-.135.294-.27.452-.135.158-.285.353-.406.474-.135.136-.277.285-.12.556.157.271.7 1.152 1.503 1.866.697.62 1.285.811 1.57.947.285.136.45.113.62-.083.168-.195.72-.834.912-1.12.19-.285.382-.237.64-.143.26.094 1.643.774 1.925.917.282.143.472.21.54.327.067.118.067.683-.17 1.353z" clip-rule="evenodd" />
-                            </svg>
-                            <span>Hubungi Pengurus</span>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        </section>
+                        <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: all 0.4s ease;">
+                            <img src="{{ !empty($section['data']['image']) ? asset('storage/' . $section['data']['image']) : asset('assets/thumb.png') }}" alt="Event Thumbnail" style="width: 100%; height: auto; display: block; border-bottom: 1px solid rgba(255, 255, 255, 0.05); aspect-ratio: 16/9; object-fit: cover;">
+                            <div style="padding: 2.5rem; text-align: center;">
+                                <h3 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-light);">{{ $section['data']['event_title'] ?? 'Event Title' }}</h3>
+                                <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">{!! isset($section['data']['event_desc']) ? nl2br(e($section['data']['event_desc'])) : '' !!}</p>
+                                @if(!empty($section['data']['button_link']))
+                                <a href="{{ $section['data']['button_link'] }}" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem 2rem; border-radius: 50px; font-size: 1rem; font-family: var(--font-display); font-weight: 800; text-decoration: none; background: linear-gradient(135deg, rgba(var(--accent-gold-rgb), 0.8) 0%, var(--accent-gold) 100%); color: #000; box-shadow: 0 10px 25px rgba(var(--accent-gold-rgb), 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(245, 158, 11, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(245, 158, 11, 0.3)';">
+                                    <span>{{ $section['data']['button_text'] ?? 'Daftar Sekarang' }}</span>
+                                    <svg viewBox="0 0 20 20" style="width: 20px; height: 20px; fill: #000; margin-top: 1px;">
+                                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+                    </section>
+                @endif
+
+                @if($section['type'] === 'media')
+                    <!-- Media & Komunitas Section -->
+                    <section class="instagram-section container">
+                        <div class="section-header">
+                            <span class="section-tag">{{ $section['data']['tag'] ?? 'Media & Komunitas' }}</span>
+                            <h2 class="section-title">{{ $section['data']['heading'] ?? 'Koneksi Sosial Media Hub' }}</h2>
+                            <p class="section-desc">{!! isset($section['data']['description']) ? nl2br(e($section['data']['description'])) : '' !!}</p>
+                        </div>
+                        
+                        <!-- Connection Buttons -->
+                        @if(!empty($section['data']['social_links']))
+                        <div class="social-btn-container font-semibold">
+                            @foreach($section['data']['social_links'] as $link)
+                                @php
+                                    $platformLower = strtolower($link['platform']);
+                                    $btnClass = 'social-btn-ig-1'; // default
+                                    if ($platformLower === 'yt' || $platformLower === 'youtube') $btnClass = 'social-btn-yt';
+                                @endphp
+                                <a href="{{ $link['link'] }}" target="_blank" class="social-btn {{ $btnClass }}">
+                                    @if($platformLower === 'yt' || $platformLower === 'youtube')
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.163c-.272-1.022-1.074-1.826-2.099-2.099C19.548 3.5 12 3.5 12 3.5s-7.548 0-9.399.564c-1.025.273-1.827 1.077-2.1 2.1C0 8.015 0 12 0 12s0 3.985.501 5.837c.273 1.022 1.075 1.826 2.1 2.1C4.452 20.5 12 20.5 12 20.5s7.548 0 9.399-.563c1.025-.274 1.827-1.078 2.1-2.1.501-1.852.501-5.837.501-5.837s0-3.985-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                                    @else
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                    @endif
+                                    <span>{{ $link['handle'] }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+                        @endif
+                    </section>
+                @endif
+
+                @if($section['type'] === 'board')
+                    <!-- Board Directory / Kontak Pengurus Section -->
+                    @php
+                        // Extract dynamic pengurus from DB (filter by Ketua/Wakil keywords and ignore default admin unless empty)
+                        $displayList = collect();
+                        
+                        if (isset($pengurus) && $pengurus->isNotEmpty()) {
+                            foreach ($pengurus as $p) {
+                                // Check if the role/jabatan is Ketua or Wakil
+                                $isKetuaOrWakil = false;
+                                $jabatanLower = strtolower($p['jabatan']);
+                                if (str_contains($jabatanLower, 'ketua') || str_contains($jabatanLower, 'wakil') || str_contains($jabatanLower, 'chair') || str_contains($jabatanLower, 'president')) {
+                                    $isKetuaOrWakil = true;
+                                }
+                                
+                                if ($isKetuaOrWakil && ($p['nama'] !== 'Admin Hive' || $pengurus->count() === 1)) {
+                                    $displayList->push($p);
+                                }
+                            }
+                        }
+                        
+                        // Take only the first 2 items to prevent showing more than Ketua & Wakil
+                        $displayList = $displayList->take(2);
+                    @endphp
+
+                    @if($displayList->isNotEmpty())
+                    <section class="container">
+                        <div class="section-header">
+                            <span class="section-tag">{{ $section['data']['tag'] ?? 'BOARD & DIRECTORY' }}</span>
+                            <h2 class="section-title">{{ $section['data']['heading'] ?? 'Kontak Pengurus' }}</h2>
+                            <p class="section-desc">{!! isset($section['data']['description']) ? nl2br(e($section['data']['description'])) : '' !!}</p>
+                        </div>
+                        
+                        <div class="pengurus-grid">
+                            @foreach($displayList as $p)
+                                <div class="pengurus-card">
+                                    <div class="avatar-container">
+                                        @if(isset($p['photo']) && $p['photo'])
+                                            <img src="{{ $p['photo'] }}" alt="{{ $p['nama'] }}" class="avatar-img">
+                                        @else
+                                            <div class="avatar-fallback">
+                                                {{ strtoupper(substr($p['nama'], 0, 1)) }}{{ count(explode(' ', $p['nama'])) > 1 ? strtoupper(substr(explode(' ', $p['nama'])[1], 0, 1)) : '' }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    
+                                    <h3 class="pengurus-name">{{ $p['nama'] }}</h3>
+                                    <span class="pengurus-role">{{ $p['jabatan'] }}</span>
+                                    
+                                    <div class="pengurus-meta">
+                                        <div class="pengurus-meta-item">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206"></path>
+                                            </svg>
+                                            <span>&commat;{{ ltrim($p['instagram'], '@') }}</span>
+                                        </div>
+                                        <div class="pengurus-meta-item">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                            </svg>
+                                            <span>{{ $p['kontak'] }}</span>
+                                        </div>
+                                    </div>
+
+                                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $p['kontak']) }}" target="_blank" class="pengurus-contact-btn">
+                                        <svg fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 1.887.521 3.652 1.428 5.166l-1.01 3.693c-.092.336.216.63.533.518l3.666-1.3a9.92 9.92 0 004.823 1.246c5.522 0 10-4.484 10-10.017C22 6.484 17.522 2 12 2zm4.184 14.073c-.237.669-1.38 1.282-1.92 1.348-.485.06-1.127.08-3.242-.796-2.705-1.12-4.437-3.873-4.572-4.053-.135-.18-1.1-1.464-1.1-2.793 0-1.33.697-1.983.945-2.247.247-.263.541-.33.72-.33h.518c.158 0 .373-.06.586.452.225.541.765 1.866.832 2.001.068.136.113.294.023.475-.09.18-.135.294-.27.452-.135.158-.285.353-.406.474-.135.136-.277.285-.12.556.157.271.7 1.152 1.503 1.866.697.62 1.285.811 1.57.947.285.136.45.113.62-.083.168-.195.72-.834.912-1.12.19-.285.382-.237.64-.143.26.094 1.643.774 1.925.917.282.143.472.21.54.327.067.118.067.683-.17 1.353z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Hubungi Pengurus</span>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                    @endif
+                @endif
+            @endforeach
         @endif
 
     </main>
